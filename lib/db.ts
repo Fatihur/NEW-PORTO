@@ -19,11 +19,15 @@ export interface DBProject {
   link: string;
   tech_stack: string[];
   client: string;
+  role: string;
+  challenge: string;
+  key_features: string;
 }
 
 export const initDB = async () => {
   const client = await pool.connect();
   try {
+    // Create table if not exists
     await client.query(`
       CREATE TABLE IF NOT EXISTS projects (
         id SERIAL PRIMARY KEY,
@@ -37,10 +41,30 @@ export const initDB = async () => {
         link TEXT,
         tech_stack TEXT[],
         client TEXT,
+        role TEXT,
+        challenge TEXT,
+        key_features TEXT,
         created_at TIMESTAMP DEFAULT NOW()
       );
     `);
-    console.log("Tables initialized successfully");
+
+    // Migration Logic: Add columns if they don't exist (for existing tables)
+    const columnsToAdd = [
+      { name: 'role', type: 'TEXT' },
+      { name: 'challenge', type: 'TEXT' },
+      { name: 'key_features', type: 'TEXT' }
+    ];
+
+    for (const col of columnsToAdd) {
+      try {
+        await client.query(`ALTER TABLE projects ADD COLUMN IF NOT EXISTS ${col.name} ${col.type}`);
+      } catch (e) {
+        // Column likely exists or error irrelevant
+        console.log(`Column ${col.name} check finished.`);
+      }
+    }
+
+    console.log("Tables and schema initialized successfully");
     return true;
   } catch (err) {
     console.error("Error initializing DB:", err);
@@ -57,7 +81,8 @@ export const fetchProjects = async () => {
     return result.rows.map(row => ({
       ...row,
       longDescription: row.long_description,
-      techStack: row.tech_stack
+      techStack: row.tech_stack,
+      keyFeatures: row.key_features // Map snake_case to camelCase
     }));
   } catch (err: any) {
     // Error code 42P01 is "undefined_table"
@@ -79,36 +104,8 @@ export const createProject = async (project: any) => {
   const client = await pool.connect();
   try {
     const query = `
-      INSERT INTO projects (title, category, description, long_description, image, gallery, year, link, tech_stack, client)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-      RETURNING *
-    `;
-    const values = [
-      project.title,
-      project.category,
-      project.description,
-      project.longDescription,
-      project.image,
-      project.gallery,
-      project.year,
-      project.link,
-      project.techStack,
-      project.client
-    ];
-    const result = await client.query(query, values);
-    return result.rows[0];
-  } finally {
-    client.release();
-  }
-};
-
-export const updateProject = async (id: number, project: any) => {
-  const client = await pool.connect();
-  try {
-    const query = `
-      UPDATE projects 
-      SET title = $1, category = $2, description = $3, long_description = $4, image = $5, gallery = $6, year = $7, link = $8, tech_stack = $9, client = $10
-      WHERE id = $11
+      INSERT INTO projects (title, category, description, long_description, image, gallery, year, link, tech_stack, client, role, challenge, key_features)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
       RETURNING *
     `;
     const values = [
@@ -122,6 +119,40 @@ export const updateProject = async (id: number, project: any) => {
       project.link,
       project.techStack,
       project.client,
+      project.role,
+      project.challenge,
+      project.keyFeatures
+    ];
+    const result = await client.query(query, values);
+    return result.rows[0];
+  } finally {
+    client.release();
+  }
+};
+
+export const updateProject = async (id: number, project: any) => {
+  const client = await pool.connect();
+  try {
+    const query = `
+      UPDATE projects 
+      SET title = $1, category = $2, description = $3, long_description = $4, image = $5, gallery = $6, year = $7, link = $8, tech_stack = $9, client = $10, role = $11, challenge = $12, key_features = $13
+      WHERE id = $14
+      RETURNING *
+    `;
+    const values = [
+      project.title,
+      project.category,
+      project.description,
+      project.longDescription,
+      project.image,
+      project.gallery,
+      project.year,
+      project.link,
+      project.techStack,
+      project.client,
+      project.role,
+      project.challenge,
+      project.keyFeatures,
       id
     ];
     const result = await client.query(query, values);

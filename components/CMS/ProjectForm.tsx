@@ -20,6 +20,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, onSuccess, onCan
     longDescription: '',
     link: '',
     client: '',
+    role: 'Design & Development', // Default
+    challenge: '',
+    keyFeatures: '',
     techStack: [],
     image: '',
     gallery: []
@@ -156,18 +159,27 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, onSuccess, onCan
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">Client</label>
               <input 
-                name="client" value={formData.client} onChange={handleInputChange}
+                name="client" value={formData.client || ''} onChange={handleInputChange}
                 className="w-full bg-zinc-50 border border-zinc-200 p-3 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">Live Link</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">My Role</label>
               <input 
-                name="link" value={formData.link} onChange={handleInputChange}
+                name="role" value={formData.role || ''} onChange={handleInputChange}
                 className="w-full bg-zinc-50 border border-zinc-200 p-3 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
+                placeholder="e.g. Design & Dev"
               />
             </div>
           </div>
+          
+           <div className="mt-6">
+              <label className="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">Live Link</label>
+              <input 
+                name="link" value={formData.link || ''} onChange={handleInputChange}
+                className="w-full bg-zinc-50 border border-zinc-200 p-3 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
+              />
+            </div>
         </div>
 
         {/* Content Card */}
@@ -183,11 +195,26 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, onSuccess, onCan
              />
 
              <RichEditor 
-                label="Full Case Study"
+                label="The Overview (Full Case Study)"
                 value={formData.longDescription || ''}
                 onChange={(html) => handleRichTextChange('longDescription', html)}
                 minHeight="300px"
              />
+
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <RichEditor 
+                  label="The Challenge & Solution"
+                  value={formData.challenge || ''}
+                  onChange={(html) => handleRichTextChange('challenge', html)}
+                  minHeight="200px"
+                />
+                <RichEditor 
+                  label="Key Features"
+                  value={formData.keyFeatures || ''}
+                  onChange={(html) => handleRichTextChange('keyFeatures', html)}
+                  minHeight="200px"
+                />
+             </div>
            </div>
         </div>
 

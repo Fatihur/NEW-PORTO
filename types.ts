@@ -12,6 +12,10 @@ export interface Project {
   link: string;
   techStack?: string[];
   client?: string;
+  // New Fields
+  role?: string;
+  challenge?: string; // HTML content
+  keyFeatures?: string; // HTML content
 }
 
 export interface Service {

@@ -75,14 +75,13 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack }) => {
             </motion.h1>
           </div>
           <div className="lg:col-span-4">
-             <motion.p 
+             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="text-lg md:text-xl text-zinc-600 leading-relaxed border-l-2 border-zinc-900 pl-6"
-            >
-              {project.description}
-            </motion.p>
+              dangerouslySetInnerHTML={{ __html: project.description }}
+            />
           </div>
         </div>
 
@@ -160,7 +159,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack }) => {
 
               <div className="border-t border-zinc-200 pt-4">
                 <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Role</h4>
-                <p className="text-zinc-900 font-medium text-lg">Design & Development</p>
+                <p className="text-zinc-900 font-medium text-lg">{project.role || 'Design & Development'}</p>
               </div>
 
               {project.techStack && (
@@ -176,15 +175,19 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack }) => {
                 </div>
               )}
 
-              <div className="pt-8">
-                <a 
-                  href={project.link}
-                  className="w-full py-4 bg-zinc-900 text-white font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:bg-zinc-700 transition-all group"
-                >
-                  Visit Live Site
-                  <ExternalLink className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
-                </a>
-              </div>
+              {project.link && (
+                <div className="pt-8">
+                  <a 
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-4 bg-zinc-900 text-white font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:bg-zinc-700 transition-all group"
+                  >
+                    Visit Live Site
+                    <ExternalLink className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
 
@@ -197,29 +200,33 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack }) => {
               className="prose prose-zinc prose-lg max-w-none"
             >
               <h3 className="text-2xl font-bold tracking-tight mb-6">The Overview</h3>
-              <p className="text-zinc-600 leading-loose mb-12 text-lg">
-                {project.longDescription || project.description}
-              </p>
+              <div 
+                className="text-zinc-600 leading-loose mb-12 text-lg"
+                dangerouslySetInnerHTML={{ __html: project.longDescription || project.description }}
+              />
               
-              <div className="bg-zinc-50 p-8 md:p-12 border border-zinc-200 relative overflow-hidden my-12">
-                <GridPattern />
-                <h3 className="text-lg font-bold tracking-tight mb-4 relative z-10">The Challenge & Solution</h3>
-                <p className="text-zinc-600 relative z-10 leading-relaxed">
-                  We approached this project with a mobile-first philosophy, ensuring that every interaction was optimized for touch before scaling up to desktop. The result is a fluid interface that maintains performance metrics of 98+ on Lighthouse.
-                </p>
-                {/* Decorative Element */}
-                <div className="absolute bottom-0 right-0 w-12 h-12 border-t border-l border-zinc-300"></div>
-              </div>
+              {project.challenge && (
+                <div className="bg-zinc-50 p-8 md:p-12 border border-zinc-200 relative overflow-hidden my-12">
+                  <GridPattern />
+                  <h3 className="text-lg font-bold tracking-tight mb-4 relative z-10">The Challenge & Solution</h3>
+                  <div 
+                    className="text-zinc-600 relative z-10 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: project.challenge }}
+                  />
+                  {/* Decorative Element */}
+                  <div className="absolute bottom-0 right-0 w-12 h-12 border-t border-l border-zinc-300"></div>
+                </div>
+              )}
 
-              <h3 className="text-2xl font-bold tracking-tight mb-6">Key Features</h3>
-              <ul className="space-y-4 list-none pl-0 text-zinc-600">
-                 {[1,2,3].map((i) => (
-                   <li key={i} className="flex items-start gap-4">
-                     <div className="w-6 h-px bg-zinc-400 mt-3 shrink-0"></div>
-                     <span>Seamless integration with existing backend systems to ensure data integrity.</span>
-                   </li>
-                 ))}
-              </ul>
+              {project.keyFeatures && (
+                <>
+                  <h3 className="text-2xl font-bold tracking-tight mb-6">Key Features</h3>
+                  <div 
+                    className="text-zinc-600 leading-loose space-y-4"
+                    dangerouslySetInnerHTML={{ __html: project.keyFeatures }}
+                  />
+                </>
+              )}
             </motion.div>
           </div>
 
