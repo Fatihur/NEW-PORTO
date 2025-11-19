@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, LogOut, FolderPlus, BarChart } from 'lucide-react';
+import { Layout, LogOut, FolderPlus, BarChart, Briefcase, MessageSquare } from 'lucide-react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -9,6 +9,13 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeTab, onTabChange, onLogout }) => {
+  const navItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: <BarChart className="w-4 h-4" /> },
+    { id: 'projects', label: 'Projects', icon: <FolderPlus className="w-4 h-4" /> },
+    { id: 'experience', label: 'Experience', icon: <Briefcase className="w-4 h-4" /> },
+    { id: 'messages', label: 'Messages', icon: <MessageSquare className="w-4 h-4" /> },
+  ];
+
   return (
     <div className="min-h-screen bg-zinc-100 flex">
       {/* Sidebar */}
@@ -19,20 +26,20 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeTab, onTabCha
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
-          <button 
-            onClick={() => onTabChange('dashboard')}
-            className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'}`}
-          >
-            <BarChart className="w-4 h-4" />
-            Dashboard
-          </button>
-          <button 
-            onClick={() => onTabChange('projects')}
-            className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'projects' ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'}`}
-          >
-            <FolderPlus className="w-4 h-4" />
-            Projects
-          </button>
+          {navItems.map((item) => (
+            <button 
+              key={item.id}
+              onClick={() => onTabChange(item.id)}
+              className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${
+                activeTab === item.id 
+                  ? 'bg-zinc-800 text-white border-l-4 border-white' 
+                  : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white border-l-4 border-transparent'
+              }`}
+            >
+              {item.icon}
+              {item.label}
+            </button>
+          ))}
         </nav>
 
         <div className="p-4 border-t border-zinc-800">

@@ -1,33 +1,14 @@
 import { Pool } from '@neondatabase/serverless';
 
 // WARNING: In a real production app, never expose your connection string with password in the frontend code.
-// This should be handled by a backend API or Edge Function.
-// We are using it here for the specific requirement of a client-side CMS panel.
 const connectionString = "postgresql://neondb_owner:npg_5LqOAac8NZlB@ep-hidden-shadow-adyjhdg7-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require";
 
 export const pool = new Pool({ connectionString });
 
-export interface DBProject {
-  id: number;
-  title: string;
-  category: string;
-  description: string;
-  long_description: string;
-  image: string;
-  gallery: string[];
-  year: string;
-  link: string;
-  tech_stack: string[];
-  client: string;
-  role: string;
-  challenge: string;
-  key_features: string;
-}
-
 export const initDB = async () => {
   const client = await pool.connect();
   try {
-    // Create table if not exists
+    // Projects Table
     await client.query(`
       CREATE TABLE IF NOT EXISTS projects (
         id SERIAL PRIMARY KEY,
@@ -48,7 +29,31 @@ export const initDB = async () => {
       );
     `);
 
-    // Migration Logic: Add columns if they don't exist (for existing tables)
+    // Experience Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS experience (
+        id SERIAL PRIMARY KEY,
+        role TEXT NOT NULL,
+        company TEXT NOT NULL,
+        period TEXT NOT NULL,
+        description TEXT NOT NULL,
+        skills TEXT[],
+        created_at TIMESTAMP DEFAULT NOW()
+      );
+    `);
+
+    // Messages Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS messages (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        message TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      );
+    `);
+
+    // Migration Logic for Projects (Keep existing logic)
     const columnsToAdd = [
       { name: 'role', type: 'TEXT' },
       { name: 'challenge', type: 'TEXT' },
@@ -59,7 +64,6 @@ export const initDB = async () => {
       try {
         await client.query(`ALTER TABLE projects ADD COLUMN IF NOT EXISTS ${col.name} ${col.type}`);
       } catch (e) {
-        // Column likely exists or error irrelevant
         console.log(`Column ${col.name} check finished.`);
       }
     }
@@ -74,6 +78,7 @@ export const initDB = async () => {
   }
 };
 
+// --- PROJECTS ---
 export const fetchProjects = async () => {
   const client = await pool.connect();
   try {
@@ -82,18 +87,13 @@ export const fetchProjects = async () => {
       ...row,
       longDescription: row.long_description,
       techStack: row.tech_stack,
-      keyFeatures: row.key_features // Map snake_case to camelCase
+      keyFeatures: row.key_features
     }));
   } catch (err: any) {
-    // Error code 42P01 is "undefined_table"
     if (err.code === '42P01') {
-      console.warn("Table 'projects' does not exist. Auto-initializing database schema...");
-      // Attempt to initialize the DB automatically
       await initDB();
-      // Return empty array so the app falls back to static data smoothly
       return [];
     }
-    console.error("Error fetching projects:", err);
     return [];
   } finally {
     client.release();
@@ -171,3 +171,85 @@ export const deleteProject = async (id: number) => {
         client.release();
     }
 }
+
+// --- EXPERIENCE ---
+export const fetchExperience = async () => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query('SELECT * FROM experience ORDER BY id DESC');
+    return result.rows;
+  } catch (err: any) {
+    if (err.code === '42P01') return []; // Table doesn't exist yet
+    return [];
+  } finally {
+    client.release();
+  }
+};
+
+export const createExperience = async (exp: any) => {
+  const client = await pool.connect();
+  try {
+    const query = `
+      INSERT INTO experience (role, company, period, description, skills)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *
+    `;
+    const values = [exp.role, exp.company, exp.period, exp.description, exp.skills];
+    const result = await client.query(query, values);
+    return result.rows[0];
+  } finally {
+    client.release();
+  }
+};
+
+export const updateExperience = async (id: number, exp: any) => {
+  const client = await pool.connect();
+  try {
+    const query = `
+      UPDATE experience
+      SET role = $1, company = $2, period = $3, description = $4, skills = $5
+      WHERE id = $6
+      RETURNING *
+    `;
+    const values = [exp.role, exp.company, exp.period, exp.description, exp.skills, id];
+    const result = await client.query(query, values);
+    return result.rows[0];
+  } finally {
+    client.release();
+  }
+};
+
+export const deleteExperience = async (id: number) => {
+  const client = await pool.connect();
+  try {
+    await client.query('DELETE FROM experience WHERE id = $1', [id]);
+    return true;
+  } finally {
+    client.release();
+  }
+};
+
+// --- MESSAGES ---
+export const sendMessage = async (msg: any) => {
+  const client = await pool.connect();
+  try {
+    const query = `INSERT INTO messages (name, email, message) VALUES ($1, $2, $3) RETURNING *`;
+    const result = await client.query(query, [msg.name, msg.email, msg.message]);
+    return result.rows[0];
+  } finally {
+    client.release();
+  }
+};
+
+export const fetchMessages = async () => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query('SELECT * FROM messages ORDER BY created_at DESC');
+    return result.rows;
+  } catch (err: any) {
+    if (err.code === '42P01') return [];
+    return [];
+  } finally {
+    client.release();
+  }
+};

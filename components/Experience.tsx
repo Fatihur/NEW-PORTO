@@ -1,8 +1,14 @@
 import React from 'react';
-import { EXPERIENCE_ITEMS } from '../constants';
+import { ExperienceItem } from '../types';
 import { motion } from 'framer-motion';
 
-const Experience: React.FC = () => {
+interface ExperienceProps {
+  items?: ExperienceItem[];
+}
+
+const Experience: React.FC<ExperienceProps> = ({ items = [] }) => {
+  if (items.length === 0) return null;
+
   return (
     <section id="experience" className="py-24 md:py-32 bg-zinc-50 border-b border-zinc-200">
       <div className="container mx-auto px-8 md:px-16 lg:px-24">
@@ -28,7 +34,7 @@ const Experience: React.FC = () => {
 
           {/* Right Column: Stacking Cards */}
           <div className="lg:w-2/3 relative">
-            {EXPERIENCE_ITEMS.map((item, index) => (
+            {items.map((item, index) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 50 }}

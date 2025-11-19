@@ -1,9 +1,29 @@
-import React from 'react';
-import { ArrowRight, Mail, MapPin } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, Mail, MapPin, Loader2, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { RevealTitle } from './TextAnimations';
+import { sendMessage } from '../lib/db';
 
 const Contact: React.FC = () => {
+  const [formState, setFormState] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formState.name || !formState.email || !formState.message) return;
+    
+    setStatus('loading');
+    try {
+      await sendMessage(formState);
+      setStatus('success');
+      setFormState({ name: '', email: '', message: '' });
+      setTimeout(() => setStatus('idle'), 5000);
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+    }
+  };
+
   return (
     <section id="contact" className="py-24 md:py-32 bg-zinc-900 text-zinc-50">
       <div className="container mx-auto px-8 md:px-16 lg:px-24">
@@ -55,46 +75,67 @@ const Contact: React.FC = () => {
             <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-white/10"></div>
             <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-white/10"></div>
             
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-xs uppercase tracking-wider text-zinc-500">Name</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    className="w-full bg-transparent border-b border-zinc-700 py-3 text-white focus:border-white focus:outline-none transition-colors rounded-none"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-xs uppercase tracking-wider text-zinc-500">Email</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    className="w-full bg-transparent border-b border-zinc-700 py-3 text-white focus:border-white focus:outline-none transition-colors rounded-none"
-                    placeholder="john@example.com"
-                  />
-                </div>
+            {status === 'success' ? (
+              <div className="h-full flex flex-col items-center justify-center py-12 text-center animate-in fade-in zoom-in">
+                 <CheckCircle2 className="w-16 h-16 text-green-500 mb-6" />
+                 <h3 className="text-2xl font-bold text-white mb-2">Message Sent</h3>
+                 <p className="text-zinc-400">I will get back to you as soon as possible.</p>
+                 <button onClick={() => setStatus('idle')} className="mt-8 text-xs font-bold uppercase tracking-widest hover:underline">Send another</button>
               </div>
-              
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-xs uppercase tracking-wider text-zinc-500">Message</label>
-                <textarea 
-                  id="message" 
-                  rows={4}
-                  className="w-full bg-transparent border-b border-zinc-700 py-3 text-white focus:border-white focus:outline-none transition-colors resize-none rounded-none"
-                  placeholder="Tell me about your project..."
-                ></textarea>
-              </div>
+            ) : (
+              <form className="space-y-6" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="text-xs uppercase tracking-wider text-zinc-500">Name</label>
+                    <input 
+                      required
+                      type="text" 
+                      id="name" 
+                      value={formState.name}
+                      onChange={(e) => setFormState({...formState, name: e.target.value})}
+                      className="w-full bg-transparent border-b border-zinc-700 py-3 text-white focus:border-white focus:outline-none transition-colors rounded-none"
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-xs uppercase tracking-wider text-zinc-500">Email</label>
+                    <input 
+                      required
+                      type="email" 
+                      id="email" 
+                      value={formState.email}
+                      onChange={(e) => setFormState({...formState, email: e.target.value})}
+                      className="w-full bg-transparent border-b border-zinc-700 py-3 text-white focus:border-white focus:outline-none transition-colors rounded-none"
+                      placeholder="john@example.com"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="message" className="text-xs uppercase tracking-wider text-zinc-500">Message</label>
+                  <textarea 
+                    required
+                    id="message" 
+                    rows={4}
+                    value={formState.message}
+                    onChange={(e) => setFormState({...formState, message: e.target.value})}
+                    className="w-full bg-transparent border-b border-zinc-700 py-3 text-white focus:border-white focus:outline-none transition-colors resize-none rounded-none"
+                    placeholder="Tell me about your project..."
+                  ></textarea>
+                </div>
 
-              <button 
-                type="submit" 
-                className="mt-4 w-full bg-white text-zinc-900 py-4 font-bold text-sm uppercase tracking-widest hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2 group"
-              >
-                Send Message
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </form>
+                <button 
+                  type="submit" 
+                  disabled={status === 'loading'}
+                  className="mt-4 w-full bg-white text-zinc-900 py-4 font-bold text-sm uppercase tracking-widest hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2 group disabled:opacity-50"
+                >
+                  {status === 'loading' ? <Loader2 className="w-4 h-4 animate-spin" /> : (
+                    <>Send Message <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></>
+                  )}
+                </button>
+                {status === 'error' && <p className="text-red-400 text-xs text-center">Failed to send. Please try again.</p>}
+              </form>
+            )}
           </motion.div>
         </div>
       </div>

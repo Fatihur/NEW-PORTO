@@ -11,10 +11,12 @@ import ProjectDetail from './components/ProjectDetail';
 import AllProjects from './components/AllProjects';
 import AdminLayout from './components/CMS/AdminLayout';
 import ProjectForm from './components/CMS/ProjectForm';
+import ExperienceManager from './components/CMS/ExperienceManager';
+import ContactManager from './components/CMS/ContactManager';
 import Chatbot from './components/Chatbot';
-import { PROJECTS as STATIC_PROJECTS } from './constants';
-import { Project } from './types';
-import { initDB, fetchProjects, deleteProject } from './lib/db';
+import { PROJECTS as STATIC_PROJECTS, EXPERIENCE_ITEMS as STATIC_EXPERIENCE } from './constants';
+import { Project, ExperienceItem, ContactMessage } from './types';
+import { initDB, fetchProjects, deleteProject, fetchExperience, fetchMessages } from './lib/db';
 import { Loader2, Plus, Trash2, Edit, RefreshCcw } from 'lucide-react';
 
 type ViewState = 'home' | 'project-detail' | 'all-projects' | 'admin-login' | 'admin-dashboard';
@@ -26,7 +28,10 @@ const App: React.FC = () => {
   
   // Data State
   const [projects, setProjects] = useState<Project[]>(STATIC_PROJECTS);
-  const [loadingProjects, setLoadingProjects] = useState(false);
+  const [experience, setExperience] = useState<ExperienceItem[]>(STATIC_EXPERIENCE);
+  const [messages, setMessages] = useState<ContactMessage[]>([]);
+  
+  const [loadingData, setLoadingData] = useState(false);
 
   // Admin State
   const [isAdmin, setIsAdmin] = useState(false);
@@ -35,24 +40,40 @@ const App: React.FC = () => {
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [dbInitStatus, setDbInitStatus] = useState<string>('');
 
-  // Initial Fetch
-  useEffect(() => {
-    const loadData = async () => {
-      setLoadingProjects(true);
-      try {
-        // Attempt to fetch from DB
-        const dbProjects = await fetchProjects();
-        if (dbProjects && dbProjects.length > 0) {
-           setProjects(dbProjects);
-        }
-      } catch (e) {
-        console.warn("Could not fetch from DB, using static data");
-      } finally {
-        setLoadingProjects(false);
+  // Data Fetching Wrapper
+  const refreshAllData = async () => {
+    setLoadingData(true);
+    try {
+      // 1. Projects
+      const dbProjects = await fetchProjects();
+      if (dbProjects && dbProjects.length > 0) setProjects(dbProjects);
+
+      // 2. Experience
+      const dbExp = await fetchExperience();
+      if (dbExp && dbExp.length > 0) setExperience(dbExp);
+
+      // 3. Messages (Only if admin)
+      if (isAdmin) {
+        const dbMsgs = await fetchMessages();
+        setMessages(dbMsgs);
       }
-    };
-    loadData();
+
+    } catch (e) {
+      console.warn("Data fetch incomplete, using defaults where available");
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  // Initial Load
+  useEffect(() => {
+    refreshAllData();
   }, []);
+
+  // Fetch messages when entering admin
+  useEffect(() => {
+    if (isAdmin) refreshAllData();
+  }, [isAdmin]);
 
   // Check for admin route in hash and listen for changes
   useEffect(() => {
@@ -101,19 +122,13 @@ const App: React.FC = () => {
     setDbInitStatus('initializing');
     const success = await initDB();
     setDbInitStatus(success ? 'success' : 'error');
-  };
-
-  const refreshProjects = async () => {
-    setLoadingProjects(true);
-    const dbProjects = await fetchProjects();
-    if (dbProjects) setProjects(dbProjects);
-    setLoadingProjects(false);
+    if (success) refreshAllData();
   };
 
   const handleDeleteProject = async (id: number) => {
      if(window.confirm('Are you sure you want to delete this project?')) {
          await deleteProject(id);
-         await refreshProjects();
+         await refreshAllData();
      }
   }
 
@@ -171,14 +186,13 @@ const App: React.FC = () => {
                 <p className="text-4xl font-light">{projects.length}</p>
               </div>
               <div className="bg-white p-6 border border-zinc-200 shadow-sm relative overflow-hidden">
-                 <div className="absolute top-0 right-0 w-16 h-16 bg-green-50 rounded-bl-full -mr-8 -mt-8"></div>
-                 <p className="text-xs font-bold uppercase text-zinc-400 mb-2">Database Status</p>
-                 <p className="text-xl font-medium text-green-600">Connected</p>
-                 <p className="text-xs text-zinc-400 mt-1">Neon Serverless</p>
+                 <div className="absolute top-0 right-0 w-16 h-16 bg-zinc-50 rounded-bl-full -mr-8 -mt-8"></div>
+                 <p className="text-xs font-bold uppercase text-zinc-400 mb-2">Messages</p>
+                 <p className="text-4xl font-light">{messages.length}</p>
               </div>
               <div className="bg-white p-6 border border-zinc-200 shadow-sm relative overflow-hidden flex items-center justify-center">
-                 <button onClick={refreshProjects} className="text-zinc-500 hover:text-zinc-900 flex flex-col items-center gap-2">
-                    <RefreshCcw className={`w-6 h-6 ${loadingProjects ? 'animate-spin' : ''}`} />
+                 <button onClick={refreshAllData} className="text-zinc-500 hover:text-zinc-900 flex flex-col items-center gap-2">
+                    <RefreshCcw className={`w-6 h-6 ${loadingData ? 'animate-spin' : ''}`} />
                     <span className="text-xs font-bold uppercase">Sync Data</span>
                  </button>
               </div>
@@ -187,7 +201,7 @@ const App: React.FC = () => {
             <div className="bg-white p-8 border border-zinc-200 max-w-xl">
               <h3 className="text-lg font-bold mb-4">Database Initialization</h3>
               <p className="text-zinc-500 mb-6 text-sm leading-relaxed">
-                If this is your first time running the CMS, you need to create the necessary tables in your Neon database.
+                Use this if you need to reset schema or initialize new tables for Experience/Messages.
               </p>
               <button 
                 onClick={handleInitDB}
@@ -196,7 +210,7 @@ const App: React.FC = () => {
                   dbInitStatus === 'success' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-zinc-900 text-white border-zinc-900 hover:bg-zinc-700'
                 }`}
               >
-                {dbInitStatus === 'initializing' ? 'Initializing...' : dbInitStatus === 'success' ? 'Tables Created' : 'Initialize Tables'}
+                {dbInitStatus === 'initializing' ? 'Initializing...' : dbInitStatus === 'success' ? 'System Ready' : 'Initialize Tables'}
               </button>
             </div>
           </div>
@@ -207,7 +221,7 @@ const App: React.FC = () => {
             {showProjectForm ? (
               <ProjectForm 
                 initialData={editingProject}
-                onSuccess={() => { setShowProjectForm(false); refreshProjects(); }}
+                onSuccess={() => { setShowProjectForm(false); refreshAllData(); }}
                 onCancel={() => setShowProjectForm(false)}
               />
             ) : (
@@ -286,6 +300,14 @@ const App: React.FC = () => {
             )}
           </div>
         )}
+
+        {adminTab === 'experience' && (
+           <ExperienceManager initialData={experience} onRefresh={refreshAllData} />
+        )}
+
+        {adminTab === 'messages' && (
+           <ContactManager messages={messages} />
+        )}
       </AdminLayout>
     );
   }
@@ -321,7 +343,7 @@ const App: React.FC = () => {
               onProjectClick={handleProjectClick} 
               onViewAllClick={handleViewAll}
             />
-            <Experience />
+            <Experience items={experience} />
             <About />
             <Contact />
           </div>

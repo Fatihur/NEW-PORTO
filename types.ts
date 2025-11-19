@@ -34,6 +34,14 @@ export interface ExperienceItem {
   skills: string[];
 }
 
+export interface ContactMessage {
+  id: number;
+  name: string;
+  email: string;
+  message: string;
+  created_at: string;
+}
+
 export interface NavigationItem {
   label: string;
   href: string;
