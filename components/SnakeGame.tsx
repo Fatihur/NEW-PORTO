@@ -25,10 +25,8 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onClose }) => {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   
-  // Game Loop Ref to prevent closure staleness
-  // Using ReturnType<typeof setInterval> to support both Browser (number) and Node (Timeout) environments if type definitions exist
   const gameLoopRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const directionRef = useRef<Direction>('RIGHT'); // To handle rapid key presses
+  const directionRef = useRef<Direction>('RIGHT'); 
 
   useEffect(() => {
     const stored = localStorage.getItem('fatih_snake_highscore');
@@ -195,7 +193,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onClose }) => {
       <motion.div 
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
-        className="bg-white p-6 rounded-sm shadow-2xl max-w-md w-full border border-zinc-200 relative"
+        className="bg-white p-6 rounded-sm shadow-2xl max-w-md w-full border border-zinc-200 relative flex flex-col max-h-[90vh] overflow-y-auto"
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
@@ -218,8 +216,8 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onClose }) => {
           </div>
         </div>
 
-        {/* Game Board */}
-        <div className="relative border border-zinc-200 bg-zinc-50 aspect-square flex items-center justify-center overflow-hidden mb-6">
+        {/* Game Board Container - Responsive scaling */}
+        <div className="relative border border-zinc-200 bg-zinc-50 aspect-square flex items-center justify-center overflow-hidden mb-6 w-full mx-auto max-w-[400px]">
           <canvas 
             ref={canvasRef} 
             width={CANVAS_SIZE} 
@@ -232,7 +230,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onClose }) => {
             <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-[2px]">
               <button 
                 onClick={resetGame}
-                className="flex items-center gap-2 px-8 py-4 bg-zinc-900 text-white font-bold uppercase tracking-wider hover:bg-zinc-800 transition-transform hover:scale-105 shadow-lg"
+                className="flex items-center gap-2 px-8 py-4 bg-zinc-900 text-white font-bold uppercase tracking-wider hover:bg-zinc-800 transition-transform hover:scale-105 shadow-lg text-sm md:text-base"
               >
                 <Play className="w-5 h-5" /> Start Game
               </button>
@@ -242,11 +240,11 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onClose }) => {
           {/* Game Over Overlay */}
           {isGameOver && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 backdrop-blur-[2px]">
-              <h3 className="text-3xl font-bold text-zinc-900 mb-2">Game Over</h3>
+              <h3 className="text-2xl md:text-3xl font-bold text-zinc-900 mb-2">Game Over</h3>
               <p className="text-zinc-500 mb-6">Final Score: {score}</p>
               <button 
                 onClick={resetGame}
-                className="flex items-center gap-2 px-6 py-3 bg-zinc-900 text-white font-bold uppercase tracking-wider hover:bg-zinc-800 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-zinc-900 text-white font-bold uppercase tracking-wider hover:bg-zinc-800 transition-colors text-sm md:text-base"
               >
                 <RefreshCcw className="w-4 h-4" /> Play Again
               </button>
@@ -255,19 +253,19 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onClose }) => {
         </div>
 
         {/* Controls Hint / Mobile Controls */}
-        <div className="flex justify-between items-end">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-4">
             <div className="hidden md:block text-xs text-zinc-400 font-mono">
               Use <span className="bg-zinc-100 border border-zinc-200 px-1 rounded">Arrow Keys</span> to move
             </div>
 
             {/* Mobile D-Pad */}
-            <div className="md:hidden w-full flex flex-col items-center gap-2">
-               <button onClick={() => { if(directionRef.current !== 'DOWN') directionRef.current = 'UP'; }} className="p-3 bg-zinc-100 rounded active:bg-zinc-200"><ChevronUp /></button>
+            <div className="md:hidden w-full max-w-[200px] flex flex-col items-center gap-2">
+               <button onClick={() => { if(directionRef.current !== 'DOWN') directionRef.current = 'UP'; }} className="p-3 bg-zinc-100 rounded active:bg-zinc-200 w-12 h-12 flex items-center justify-center"><ChevronUp /></button>
                <div className="flex gap-4">
-                  <button onClick={() => { if(directionRef.current !== 'RIGHT') directionRef.current = 'LEFT'; }} className="p-3 bg-zinc-100 rounded active:bg-zinc-200"><ChevronLeft /></button>
-                  <button onClick={() => { if(directionRef.current !== 'LEFT') directionRef.current = 'RIGHT'; }} className="p-3 bg-zinc-100 rounded active:bg-zinc-200"><ChevronRight /></button>
+                  <button onClick={() => { if(directionRef.current !== 'RIGHT') directionRef.current = 'LEFT'; }} className="p-3 bg-zinc-100 rounded active:bg-zinc-200 w-12 h-12 flex items-center justify-center"><ChevronLeft /></button>
+                  <button onClick={() => { if(directionRef.current !== 'LEFT') directionRef.current = 'RIGHT'; }} className="p-3 bg-zinc-100 rounded active:bg-zinc-200 w-12 h-12 flex items-center justify-center"><ChevronRight /></button>
                </div>
-               <button onClick={() => { if(directionRef.current !== 'UP') directionRef.current = 'DOWN'; }} className="p-3 bg-zinc-100 rounded active:bg-zinc-200"><ChevronDown /></button>
+               <button onClick={() => { if(directionRef.current !== 'UP') directionRef.current = 'DOWN'; }} className="p-3 bg-zinc-100 rounded active:bg-zinc-200 w-12 h-12 flex items-center justify-center"><ChevronDown /></button>
             </div>
 
             <div className="hidden md:block text-[10px] text-zinc-300 uppercase tracking-widest">

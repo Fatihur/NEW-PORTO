@@ -34,7 +34,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminClick, onPlayGame }) => {
 
   return (
     <footer className="bg-zinc-950 text-zinc-400 py-12 border-t border-zinc-800">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="container mx-auto px-6 md:px-12 lg:px-24 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex flex-col md:flex-row items-center gap-6">
            <div className="text-sm select-none" onDoubleClick={onAdminClick} title="Double click for Admin">
              <p className="cursor-default hover:text-zinc-200 transition-colors clickable">&copy; {new Date().getFullYear()} Fatih. All rights reserved.</p>

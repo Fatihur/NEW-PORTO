@@ -13,8 +13,8 @@ const About: React.FC = () => {
 
   return (
     <section id="about" className="py-24 md:py-32 bg-white border-b border-zinc-200 overflow-hidden">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24">
-        <div className="flex flex-col lg:flex-row gap-16">
+      <div className="container mx-auto px-6 md:px-12 lg:px-24">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -27,7 +27,7 @@ const About: React.FC = () => {
                <RevealTitle text="Elegance in design." className="text-3xl md:text-4xl font-bold tracking-tight" delay={0.2} />
             </div>
             
-            <div className="space-y-6 text-zinc-600 leading-relaxed">
+            <div className="space-y-6 text-zinc-600 leading-relaxed text-base md:text-lg">
               <p>
                 Hi, I'm <strong>Fatih</strong>. I am a frontend engineer with a background in graphic design. This duality allows me to bridge the gap between visual aesthetics and technical implementation. I believe that the best digital products are those where form and function are indistinguishable.
               </p>
@@ -72,10 +72,12 @@ const About: React.FC = () => {
                 <GridPattern />
                 <CornerAccents />
                 
-                {/* Background Geometric */}
-                <ConcentricCircles className="absolute w-[500px] h-[500px] opacity-10 text-zinc-400" />
+                {/* Background Geometric - Responsive sizing */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+                   <ConcentricCircles className="w-[140%] max-w-[500px] aspect-square opacity-10 text-zinc-400" />
+                </div>
 
-                <div className="w-64 h-64 border border-zinc-300 relative z-10 bg-white">
+                <div className="w-56 h-56 md:w-64 md:h-64 border border-zinc-300 relative z-10 bg-white">
                    <motion.div 
                      animate={{ rotate: [6, 3, 6] }}
                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -99,7 +101,7 @@ const About: React.FC = () => {
                   whileInView={{ y: 0, opacity: 1 }}
                   viewport={{ once: false }}
                   transition={{ delay: 0.6 }}
-                  className="absolute bottom-12 left-8 bg-white border border-zinc-200 p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] max-w-[200px] z-20"
+                  className="absolute bottom-8 md:bottom-12 left-4 md:left-8 bg-white border border-zinc-200 p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] max-w-[200px] z-20"
                 >
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-zinc-900 shrink-0 mt-0.5" />

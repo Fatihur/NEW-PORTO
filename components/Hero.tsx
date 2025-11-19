@@ -52,7 +52,7 @@ const Hero: React.FC = () => {
       />
 
       <motion.div 
-        className="container mx-auto px-8 md:px-16 lg:px-24 relative z-10"
+        className="container mx-auto px-6 md:px-12 lg:px-24 relative z-10"
         style={{ opacity: opacityText, y: yText }}
       >
         <div className="max-w-4xl">
@@ -62,10 +62,10 @@ const Hero: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex items-center gap-4 mb-8"
           >
-            <span className="h-[1px] w-12 bg-zinc-400"></span>
+            <span className="h-[1px] w-8 md:w-12 bg-zinc-400"></span>
             <Typewriter 
               text="PORTFOLIO 2024 / FATIH.DEV" 
-              className="text-sm uppercase tracking-widest text-zinc-500 font-medium"
+              className="text-xs md:text-sm uppercase tracking-widest text-zinc-500 font-medium"
               speed={0.03}
             />
             <StripedBar className="w-12 h-2 ml-4 opacity-30 hidden sm:block" />
@@ -77,7 +77,7 @@ const Hero: React.FC = () => {
               className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1] block"
               colors={{ first: '#71717a', second: '#a1a1aa' }} // Zinc-based sparkles
             />
-             <div className="flex flex-wrap gap-x-4 items-baseline">
+             <div className="flex flex-wrap gap-x-3 md:gap-x-4 items-baseline">
                 <span className="text-4xl md:text-7xl lg:text-8xl font-light tracking-tighter text-zinc-400 leading-[1.1]">
                    <RevealTitle text="DIGITAL" delay={0.2} />
                 </span>
@@ -91,7 +91,7 @@ const Hero: React.FC = () => {
             
             <StaggerText 
               text="I'm Fatih. I craft high-performance interfaces with a focus on geometric precision, clean typography, and seamless user interaction."
-              className="text-lg md:text-xl text-zinc-600 leading-relaxed"
+              className="text-base md:text-xl text-zinc-600 leading-relaxed"
               delay={0.8}
             />
           </div>
@@ -100,7 +100,7 @@ const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.2 }}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-6"
           >
             <a 
               href="#work" 
@@ -129,7 +129,7 @@ const Hero: React.FC = () => {
         transition={{ delay: 1.5, duration: 0.5 }}
         className="absolute bottom-0 left-0 right-0 border-t border-zinc-200 bg-white/50 backdrop-blur-sm hidden min-h-[700px]:block"
       >
-        <div className="container mx-auto px-8 md:px-16 lg:px-24 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-6 md:px-12 lg:px-24 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-zinc-500 uppercase tracking-widest">
             <PlusIcon className="text-zinc-400" />
             <span>Scroll to explore</span>

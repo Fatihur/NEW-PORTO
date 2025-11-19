@@ -23,7 +23,7 @@ const item: Variants = {
 const Services: React.FC = () => {
   return (
     <section id="services" className="py-24 md:py-32 border-b border-zinc-200 bg-white">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24">
+      <div className="container mx-auto px-6 md:px-12 lg:px-24">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <div>
             <RevealTitle text="Technical Expertise" className="text-3xl md:text-4xl font-bold tracking-tight mb-4" />

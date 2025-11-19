@@ -13,7 +13,7 @@ const Experience: React.FC<ExperienceProps> = ({ items = [] }) => {
 
   return (
     <section id="experience" className="py-24 md:py-32 bg-zinc-50 border-b border-zinc-200">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24">
+      <div className="container mx-auto px-6 md:px-12 lg:px-24">
         <div className="flex flex-col lg:flex-row gap-12">
           
           {/* Left Column: Sticky Title */}
@@ -43,10 +43,10 @@ const Experience: React.FC<ExperienceProps> = ({ items = [] }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                // The Sticky Stack Magic
-                className="relative lg:sticky mb-8 bg-white border border-zinc-200 p-6 md:p-10 shadow-sm"
+                // The Sticky Stack Magic - disable on mobile for better scrolling experience
+                className="relative lg:sticky mb-8 lg:mb-8 bg-white border border-zinc-200 p-6 md:p-10 shadow-sm"
                 style={{ 
-                  top: `calc(120px + ${index * 20}px)`, // Dynamic top offset creates the stack effect
+                  top: `calc(120px + ${index * 20}px)`, // Dynamic top offset creates the stack effect (only works when sticky is active)
                   zIndex: index + 1
                 }}
               >

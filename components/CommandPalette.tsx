@@ -117,10 +117,11 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpen, proj
 
           {/* Modal */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed top-[20%] left-1/2 -translate-x-1/2 w-full max-w-2xl z-[101] p-4"
+            initial={{ opacity: 0, scale: 0.95, x: "-50%", y: "-45%" }}
+            animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+            exit={{ opacity: 0, scale: 0.95, x: "-50%", y: "-45%" }}
+            transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+            className="fixed top-1/2 left-1/2 w-full max-w-2xl z-[101] p-4"
           >
             <div className="bg-white shadow-2xl border border-zinc-200 overflow-hidden rounded-lg flex flex-col max-h-[60vh]">
               {/* Input */}

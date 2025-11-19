@@ -19,7 +19,7 @@ const Work: React.FC<WorkProps> = ({ projects, onProjectClick, onViewAllClick })
 
   return (
     <section id="work" className="py-24 md:py-32 bg-zinc-50 border-b border-zinc-200">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24">
+      <div className="container mx-auto px-6 md:px-12 lg:px-24">
         <div className="flex justify-between items-end mb-12">
           <div>
             <RevealTitle text="Selected Works" className="text-3xl md:text-4xl font-bold tracking-tight mb-4" />
@@ -42,7 +42,7 @@ const Work: React.FC<WorkProps> = ({ projects, onProjectClick, onViewAllClick })
           </motion.button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {featuredProjects.map((project) => (
             <ScrollFocusItem key={project.id} intensity="medium">
               <div 
@@ -92,12 +92,12 @@ const Work: React.FC<WorkProps> = ({ projects, onProjectClick, onViewAllClick })
           ))}
         </div>
         
-        <div className="mt-16 flex justify-center md:hidden">
+        <div className="mt-12 md:mt-16 flex justify-center md:hidden">
           <button 
             onClick={onViewAllClick}
-            className="w-full py-4 border border-zinc-300 text-sm font-medium hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-300"
+            className="w-full py-4 border border-zinc-300 text-sm font-medium hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-300 flex items-center justify-center gap-2"
           >
-            VIEW ALL ARCHIVE
+            VIEW ALL ARCHIVE <ArrowUpRight className="w-4 h-4" />
           </button>
         </div>
       </div>

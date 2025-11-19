@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView, onOpenCommand 
           isScrolled ? 'bg-white/90 backdrop-blur-md border-zinc-200 py-4' : 'bg-transparent border-transparent py-6'
         }`}
       >
-        <div className="container mx-auto px-8 md:px-16 lg:px-24 flex items-center justify-between">
+        <div className="container mx-auto px-6 md:px-12 lg:px-24 flex items-center justify-between">
           <a href="#" onClick={handleLogoClick} className="text-xl font-bold tracking-tighter z-50 relative uppercase clickable">
             FATIH<span className="text-zinc-400">.DEV</span>
           </a>
@@ -132,7 +132,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView, onOpenCommand 
 
       {/* Mobile Drawer Panel */}
       <div 
-        className={`fixed top-0 right-0 h-full w-[300px] sm:w-[400px] bg-white z-50 shadow-2xl transform transition-transform duration-300 md:hidden border-l border-zinc-200 ${
+        className={`fixed top-0 right-0 h-full w-[85vw] sm:w-[400px] bg-white z-50 shadow-2xl transform transition-transform duration-300 md:hidden border-l border-zinc-200 ${
           mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -149,7 +149,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView, onOpenCommand 
           </div>
 
           {/* Drawer Content */}
-          <div className="flex-1 py-12 px-8 flex flex-col gap-8 overflow-y-auto">
+          <div className="flex-1 py-12 px-6 flex flex-col gap-8 overflow-y-auto">
             {NAV_ITEMS.map((item) => (
               <button 
                 key={item.label} 
@@ -163,7 +163,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView, onOpenCommand 
           </div>
 
           {/* Drawer Footer */}
-          <div className="p-8 bg-zinc-50 border-t border-zinc-200">
+          <div className="p-6 sm:p-8 bg-zinc-50 border-t border-zinc-200">
             <div className="grid grid-cols-2 gap-4 mb-6">
                <div className="text-xs text-zinc-500 uppercase tracking-widest mb-1">Email</div>
                <div className="col-span-2 text-sm font-medium text-zinc-900">hello@fatih.dev</div>
