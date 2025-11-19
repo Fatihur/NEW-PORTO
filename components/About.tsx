@@ -18,7 +18,7 @@ const About: React.FC = () => {
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: false, margin: "-20%" }}
             transition={{ duration: 0.6 }}
             className="lg:w-1/2"
           >
@@ -46,7 +46,7 @@ const About: React.FC = () => {
                     key={skill} 
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false }}
                     transition={{ delay: 0.2 + (index * 0.05) }}
                     className="px-4 py-2 border border-zinc-200 text-sm hover:border-zinc-900 hover:bg-zinc-50 transition-colors cursor-default relative group"
                   >
@@ -63,7 +63,7 @@ const About: React.FC = () => {
           <motion.div 
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: false, margin: "-20%" }}
             transition={{ duration: 0.8 }}
             className="lg:w-1/2 relative"
           >
@@ -97,7 +97,7 @@ const About: React.FC = () => {
                 <motion.div 
                   initial={{ y: 20, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: false }}
                   transition={{ delay: 0.6 }}
                   className="absolute bottom-12 left-8 bg-white border border-zinc-200 p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] max-w-[200px] z-20"
                 >

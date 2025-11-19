@@ -1,6 +1,8 @@
+
 import React from 'react';
 import { ExperienceItem } from '../types';
 import { motion } from 'framer-motion';
+import ScrollFocusItem from './ScrollFocusItem';
 
 interface ExperienceProps {
   items?: ExperienceItem[];
@@ -41,42 +43,46 @@ const Experience: React.FC<ExperienceProps> = ({ items = [] }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                // The Sticky Stack Magic - Disabled on mobile (static), enabled on desktop (lg:sticky)
-                // We use style for the top offset, but it only takes effect when class is 'sticky'
+                // The Sticky Stack Magic
                 className="relative lg:sticky mb-8 bg-white border border-zinc-200 p-6 md:p-10 shadow-sm"
                 style={{ 
                   top: `calc(120px + ${index * 20}px)`, // Dynamic top offset creates the stack effect
                   zIndex: index + 1
                 }}
               >
-                {/* Card Content */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-2">
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-bold text-zinc-900">{item.role}</h3>
-                    <p className="text-zinc-500 font-medium">{item.company}</p>
+                {/* 
+                  We apply ScrollFocusItem to the INNER content. 
+                  If we apply it to the outer sticky div, 'transform' would break 'position: sticky'.
+                */}
+                <ScrollFocusItem intensity="light" className="h-full">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-2">
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold text-zinc-900">{item.role}</h3>
+                      <p className="text-zinc-500 font-medium">{item.company}</p>
+                    </div>
+                    <div className="px-3 py-1 border border-zinc-900 rounded-full inline-block w-fit">
+                      <span className="text-xs font-bold uppercase tracking-widest">{item.period}</span>
+                    </div>
                   </div>
-                  <div className="px-3 py-1 border border-zinc-900 rounded-full inline-block w-fit">
-                    <span className="text-xs font-bold uppercase tracking-widest">{item.period}</span>
+
+                  <p className="text-zinc-600 leading-relaxed mb-8 text-sm md:text-lg">
+                    {item.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2">
+                    {item.skills.map((skill) => (
+                      <span 
+                        key={skill} 
+                        className="px-3 py-1 bg-zinc-50 text-xs font-medium text-zinc-500 uppercase tracking-wider border border-zinc-100"
+                      >
+                        {skill}
+                      </span>
+                    ))}
                   </div>
-                </div>
 
-                <p className="text-zinc-600 leading-relaxed mb-8 text-sm md:text-lg">
-                  {item.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2">
-                  {item.skills.map((skill) => (
-                    <span 
-                      key={skill} 
-                      className="px-3 py-1 bg-zinc-50 text-xs font-medium text-zinc-500 uppercase tracking-wider border border-zinc-100"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Decorative Geometric Element */}
-                <div className="absolute top-0 right-0 w-6 h-6 border-b border-l border-zinc-200"></div>
+                  {/* Decorative Geometric Element */}
+                  <div className="absolute top-0 right-0 w-6 h-6 border-b border-l border-zinc-200"></div>
+                </ScrollFocusItem>
               </motion.div>
             ))}
           </div>

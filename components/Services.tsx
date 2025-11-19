@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SERVICES } from '../constants';
 import { PlusIcon } from './GeometricElements';
@@ -35,7 +36,7 @@ const Services: React.FC = () => {
           <motion.div 
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 1, ease: "circOut" }}
             className="hidden md:block h-[1px] flex-1 bg-zinc-200 mx-8 mb-2 origin-left"
           />
@@ -45,7 +46,7 @@ const Services: React.FC = () => {
           variants={container}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: false, margin: "-10%" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-zinc-200 border border-zinc-200"
         >
           {SERVICES.map((service) => (

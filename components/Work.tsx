@@ -5,6 +5,7 @@ import { Project } from '../types';
 import { motion } from 'framer-motion';
 import { RevealTitle, StaggerText } from './TextAnimations';
 import { TechnicalCorner } from './GeometricElements';
+import ScrollFocusItem from './ScrollFocusItem';
 
 interface WorkProps {
   projects: Project[];
@@ -42,55 +43,52 @@ const Work: React.FC<WorkProps> = ({ projects, onProjectClick, onViewAllClick })
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {featuredProjects.map((project, index) => (
-            <motion.div 
-              key={project.id} 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group cursor-pointer block"
-              onClick={() => onProjectClick(project)}
-            >
-              <div className="relative overflow-hidden border border-zinc-200 bg-white p-3 mb-6">
-                {/* Crop Marks */}
-                <TechnicalCorner className="absolute top-0 left-0 text-zinc-900 z-20" />
-                <TechnicalCorner className="absolute top-0 right-0 rotate-90 text-zinc-900 z-20" />
-                <TechnicalCorner className="absolute bottom-0 left-0 -rotate-90 text-zinc-900 z-20" />
-                <TechnicalCorner className="absolute bottom-0 right-0 rotate-180 text-zinc-900 z-20" />
+          {featuredProjects.map((project) => (
+            <ScrollFocusItem key={project.id} intensity="medium">
+              <div 
+                className="group cursor-pointer block"
+                onClick={() => onProjectClick(project)}
+              >
+                <div className="relative overflow-hidden border border-zinc-200 bg-white p-3 mb-6">
+                  {/* Crop Marks */}
+                  <TechnicalCorner className="absolute top-0 left-0 text-zinc-900 z-20" />
+                  <TechnicalCorner className="absolute top-0 right-0 rotate-90 text-zinc-900 z-20" />
+                  <TechnicalCorner className="absolute bottom-0 left-0 -rotate-90 text-zinc-900 z-20" />
+                  <TechnicalCorner className="absolute bottom-0 right-0 rotate-180 text-zinc-900 z-20" />
 
-                <div className="aspect-[4/3] overflow-hidden bg-zinc-100 relative m-1">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-zinc-900/0 group-hover:bg-zinc-900/10 transition-colors duration-300 flex items-center justify-center">
-                    <div className="bg-white text-zinc-900 px-6 py-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 font-medium text-sm">
-                      View Project
+                  <div className="aspect-[4/3] overflow-hidden bg-zinc-100 relative m-1">
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-zinc-900/0 group-hover:bg-zinc-900/10 transition-colors duration-300 flex items-center justify-center">
+                      <div className="bg-white text-zinc-900 px-6 py-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 font-medium text-sm">
+                        View Project
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex justify-between items-start px-2">
-                <div>
-                   <div className="flex items-center gap-3 mb-2 text-xs font-medium uppercase tracking-widest text-zinc-500">
-                    <span>{project.year}</span>
-                    <span className="w-4 h-[1px] bg-zinc-300"></span>
-                    <span>{project.category}</span>
+                <div className="flex justify-between items-start px-2">
+                  <div>
+                    <div className="flex items-center gap-3 mb-2 text-xs font-medium uppercase tracking-widest text-zinc-500">
+                      <span>{project.year}</span>
+                      <span className="w-4 h-[1px] bg-zinc-300"></span>
+                      <span>{project.category}</span>
+                    </div>
+                    <h3 className="text-2xl font-bold group-hover:underline decoration-1 underline-offset-4 transition-all">
+                      {project.title}
+                    </h3>
                   </div>
-                  <h3 className="text-2xl font-bold group-hover:underline decoration-1 underline-offset-4 transition-all">
-                    {project.title}
-                  </h3>
-                </div>
-                <div className="w-8 h-8 border border-zinc-200 flex items-center justify-center text-zinc-400 group-hover:bg-zinc-900 group-hover:text-white group-hover:border-zinc-900 transition-colors">
-                  <Plus className="w-4 h-4" />
+                  <div className="w-8 h-8 border border-zinc-200 flex items-center justify-center text-zinc-400 group-hover:bg-zinc-900 group-hover:text-white group-hover:border-zinc-900 transition-colors">
+                    <Plus className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
-            </motion.div>
+            </ScrollFocusItem>
           ))}
         </div>
         

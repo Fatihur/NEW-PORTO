@@ -35,7 +35,7 @@ const Contact: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, margin: "-10%" }}
             transition={{ duration: 0.6 }}
           >
             <div className="mb-8">
@@ -72,7 +72,7 @@ const Contact: React.FC = () => {
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, margin: "-10%" }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="bg-zinc-850 p-8 md:p-12 border border-zinc-800 relative shadow-2xl"
           >

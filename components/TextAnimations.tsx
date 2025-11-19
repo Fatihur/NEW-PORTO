@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 
@@ -15,9 +16,6 @@ export const RevealTitle: React.FC<RevealTitleProps> = ({
   delay = 0,
   lineHeight = 1.1
 }) => {
-  // Split text into lines (optional, here we treat whole block or words)
-  // For a big title, we often want to animate words or the whole block.
-  // Let's animate words for responsiveness.
   const words = text.split(" ");
 
   const container: Variants = {
@@ -54,7 +52,7 @@ export const RevealTitle: React.FC<RevealTitleProps> = ({
       variants={container}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true }}
+      viewport={{ once: false, margin: "-10%" }} // Replay animation when scrolling back
       style={{ lineHeight }}
     >
       {words.map((word, index) => (
@@ -106,7 +104,7 @@ export const Typewriter: React.FC<TypewriterProps> = ({
       variants={container}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true }}
+      viewport={{ once: false, margin: "-5%" }} // Replay animation
     >
       {letters.map((letter, index) => (
         <motion.span key={index} variants={child}>
@@ -164,7 +162,7 @@ export const StaggerText: React.FC<StaggerTextProps> = ({
       variants={container}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true }}
+      viewport={{ once: false, margin: "-10%" }} // Replay animation
     >
       {words.map((word, index) => (
         <motion.span key={index} variants={child}>
