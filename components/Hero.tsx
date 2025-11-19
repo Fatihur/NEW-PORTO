@@ -4,6 +4,7 @@ import { ArrowDown, ArrowRight } from 'lucide-react';
 import { GridPattern, PlusIcon, Crosshair, StripedBar, DotPattern } from './GeometricElements';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { RevealTitle, Typewriter, StaggerText } from './TextAnimations';
+import { SparklesText } from './ui/sparkles-text';
 
 const Hero: React.FC = () => {
   const { scrollY } = useScroll();
@@ -71,10 +72,10 @@ const Hero: React.FC = () => {
           </motion.div>
           
           <div className="mb-8">
-            {/* Adjusted font sizes for better mobile fit: text-4xl instead of 5xl on small screens */}
-            <RevealTitle 
+            <SparklesText 
               text="DESIGNING" 
-              className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1]"
+              className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1] block"
+              colors={{ first: '#71717a', second: '#a1a1aa' }} // Zinc-based sparkles
             />
              <div className="flex flex-wrap gap-x-4 items-baseline">
                 <span className="text-4xl md:text-7xl lg:text-8xl font-light tracking-tighter text-zinc-400 leading-[1.1]">
