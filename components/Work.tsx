@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight, Plus } from 'lucide-react';
 import { Project } from '../types';
 import { motion } from 'framer-motion';
+import { RevealTitle, StaggerText } from './TextAnimations';
 
 interface WorkProps {
   projects: Project[];
@@ -16,25 +17,27 @@ const Work: React.FC<WorkProps> = ({ projects, onProjectClick, onViewAllClick })
   return (
     <section id="work" className="py-24 md:py-32 bg-zinc-50 border-b border-zinc-200">
       <div className="container mx-auto px-8 md:px-16 lg:px-24">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="flex justify-between items-end mb-12"
-        >
+        <div className="flex justify-between items-end mb-12">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Selected Works</h2>
-            <p className="text-zinc-500">A collection of digital products and experiences.</p>
+            <RevealTitle text="Selected Works" className="text-3xl md:text-4xl font-bold tracking-tight mb-4" />
+            <StaggerText 
+              text="A collection of digital products and experiences."
+              className="text-zinc-500"
+              delay={0.2}
+            />
           </div>
-          <button 
+          <motion.button 
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
             onClick={onViewAllClick}
             className="hidden md:flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:text-zinc-600 transition-colors border-b border-transparent hover:border-zinc-900 pb-1"
           >
             View All
             <ArrowUpRight className="w-4 h-4" />
-          </button>
-        </motion.div>
+          </motion.button>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {featuredProjects.map((project, index) => (

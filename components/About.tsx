@@ -2,6 +2,7 @@ import React from 'react';
 import { CornerAccents } from './GeometricElements';
 import { CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { RevealTitle, Typewriter } from './TextAnimations';
 
 const About: React.FC = () => {
   const skills = [
@@ -20,10 +21,11 @@ const About: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="lg:w-1/2"
           >
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-8">
-              Precision in code.<br />
-              Elegance in design.
-            </h2>
+            <div className="mb-8">
+               <RevealTitle text="Precision in code." className="text-3xl md:text-4xl font-bold tracking-tight" />
+               <RevealTitle text="Elegance in design." className="text-3xl md:text-4xl font-bold tracking-tight" delay={0.2} />
+            </div>
+            
             <div className="space-y-6 text-zinc-600 leading-relaxed">
               <p>
                 I am a frontend engineer with a background in graphic design. This duality allows me to bridge the gap between visual aesthetics and technical implementation. I believe that the best digital products are those where form and function are indistinguishable.
@@ -34,7 +36,9 @@ const About: React.FC = () => {
             </div>
             
             <div className="mt-12">
-              <h4 className="text-sm font-bold uppercase tracking-widest mb-6 text-zinc-900">Tech Stack</h4>
+              <div className="mb-6">
+                <Typewriter text="TECH STACK" className="text-sm font-bold uppercase tracking-widest text-zinc-900" speed={0.1} />
+              </div>
               <div className="flex flex-wrap gap-3">
                 {skills.map((skill, index) => (
                   <motion.span 

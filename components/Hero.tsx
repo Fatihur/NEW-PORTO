@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowDown, ArrowRight } from 'lucide-react';
 import { GridPattern, PlusIcon } from './GeometricElements';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { RevealTitle, Typewriter, StaggerText } from './TextAnimations';
 
 const Hero: React.FC = () => {
   const { scrollY } = useScroll();
@@ -38,43 +39,41 @@ const Hero: React.FC = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex items-center gap-4 mb-6"
+            className="flex items-center gap-4 mb-8"
           >
             <span className="h-[1px] w-12 bg-zinc-400"></span>
-            <span className="text-sm uppercase tracking-widest text-zinc-500 font-medium">Portfolio 2024</span>
+            <Typewriter 
+              text="PORTFOLIO 2024 / JAKARTA.DEV" 
+              className="text-sm uppercase tracking-widest text-zinc-500 font-medium"
+              speed={0.03}
+            />
           </motion.div>
           
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1] mb-8 overflow-hidden">
-            <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-            >
-              DESIGNING
-            </motion.div>
-            <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-              className="flex flex-wrap gap-x-4"
-            >
-              <span className="text-zinc-400 font-light">DIGITAL</span> CLARITY.
-            </motion.div>
-          </h1>
+          <div className="mb-8">
+            <RevealTitle 
+              text="DESIGNING" 
+              className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1]"
+            />
+             <div className="flex flex-wrap gap-x-4 items-baseline">
+                <span className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter text-zinc-400 leading-[1.1]">
+                   <RevealTitle text="DIGITAL" delay={0.2} />
+                </span>
+                <RevealTitle text="CLARITY." delay={0.4} className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1]" />
+             </div>
+          </div>
           
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="text-lg md:text-xl text-zinc-600 max-w-xl leading-relaxed mb-12 border-l border-zinc-300 pl-6"
-          >
-            I craft high-performance interfaces with a focus on geometric precision, clean typography, and seamless user interaction.
-          </motion.p>
+          <div className="max-w-xl border-l border-zinc-300 pl-6 mb-12">
+            <StaggerText 
+              text="I craft high-performance interfaces with a focus on geometric precision, clean typography, and seamless user interaction."
+              className="text-lg md:text-xl text-zinc-600 leading-relaxed"
+              delay={0.8}
+            />
+          </div>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
+            transition={{ duration: 0.6, delay: 1.2 }}
             className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
           >
             <a 
@@ -100,7 +99,7 @@ const Hero: React.FC = () => {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.5 }}
+        transition={{ delay: 1.5, duration: 0.5 }}
         className="absolute bottom-0 left-0 right-0 border-t border-zinc-200 bg-white/50 backdrop-blur-sm"
       >
         <div className="container mx-auto px-8 md:px-16 lg:px-24 h-16 flex items-center justify-between">

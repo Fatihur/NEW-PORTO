@@ -2,6 +2,7 @@ import React from 'react';
 import { SERVICES } from '../constants';
 import { PlusIcon } from './GeometricElements';
 import { motion, Variants } from 'framer-motion';
+import { RevealTitle, StaggerText } from './TextAnimations';
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -22,19 +23,23 @@ const Services: React.FC = () => {
   return (
     <section id="services" className="py-24 md:py-32 border-b border-zinc-200 bg-white">
       <div className="container mx-auto px-8 md:px-16 lg:px-24">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6"
-        >
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Technical Expertise</h2>
-            <p className="text-zinc-500 max-w-md">Bridging the gap between complex engineering and intuitive design.</p>
+            <RevealTitle text="Technical Expertise" className="text-3xl md:text-4xl font-bold tracking-tight mb-4" />
+            <StaggerText 
+              text="Bridging the gap between complex engineering and intuitive design."
+              className="text-zinc-500 max-w-md"
+              delay={0.3}
+            />
           </div>
-          <div className="hidden md:block h-[1px] flex-1 bg-zinc-200 mx-8 mb-2"></div>
-        </motion.div>
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: "circOut" }}
+            className="hidden md:block h-[1px] flex-1 bg-zinc-200 mx-8 mb-2 origin-left"
+          />
+        </div>
 
         <motion.div 
           variants={container}

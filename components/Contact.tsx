@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Mail, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { RevealTitle } from './TextAnimations';
 
 const Contact: React.FC = () => {
   return (
@@ -13,7 +14,10 @@ const Contact: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter mb-8">Let's start a<br/>project together.</h2>
+            <div className="mb-8">
+               <RevealTitle text="Let's start a" className="text-4xl md:text-6xl font-bold tracking-tighter text-white" />
+               <RevealTitle text="project together." className="text-4xl md:text-6xl font-bold tracking-tighter text-white" delay={0.2} />
+            </div>
             <p className="text-zinc-400 text-lg mb-12 max-w-md">
               Interested in working together? We should queue up a time to chat. I'll buy the coffee.
             </p>
