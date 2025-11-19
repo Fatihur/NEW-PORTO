@@ -1,15 +1,24 @@
+
 import React, { useState, useEffect } from 'react';
 import { NAV_ITEMS } from '../constants';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, Search, Command } from 'lucide-react';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
 interface HeaderProps {
   onNavigate: (view: string) => void;
   currentView: string;
+  onOpenCommand: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onNavigate, currentView }) => {
+const Header: React.FC<HeaderProps> = ({ onNavigate, currentView, onOpenCommand }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,13 +54,19 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView }) => {
 
   return (
     <>
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-zinc-900 origin-left z-[60]"
+        style={{ scaleX }}
+      />
+
       <header 
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b ${
           isScrolled ? 'bg-white/90 backdrop-blur-md border-zinc-200 py-4' : 'bg-transparent border-transparent py-6'
         }`}
       >
         <div className="container mx-auto px-8 md:px-16 lg:px-24 flex items-center justify-between">
-          <a href="#" onClick={handleLogoClick} className="text-xl font-bold tracking-tighter z-50 relative uppercase">
+          <a href="#" onClick={handleLogoClick} className="text-xl font-bold tracking-tighter z-50 relative uppercase clickable">
             FATIH<span className="text-zinc-400">.DEV</span>
           </a>
 
@@ -61,27 +76,49 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView }) => {
               <button 
                 key={item.label} 
                 onClick={() => handleNavClick(item.href)}
-                className="text-sm font-medium text-zinc-600 hover:text-zinc-900 tracking-wide transition-colors relative group"
+                className="text-sm font-medium text-zinc-600 hover:text-zinc-900 tracking-wide transition-colors relative group clickable"
               >
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-zinc-900 transition-all duration-300 group-hover:w-full"></span>
               </button>
             ))}
+            
+            {/* Command Palette Trigger */}
+            <button 
+              onClick={onOpenCommand}
+              className="flex items-center gap-2 px-3 py-1.5 bg-zinc-100 hover:bg-zinc-200 rounded-md text-xs font-medium text-zinc-500 transition-colors clickable group"
+              title="Cmd+K"
+            >
+               <Search className="w-3 h-3" />
+               <span className="hidden lg:inline">Search</span>
+               <span className="flex items-center gap-0.5 px-1.5 py-0.5 bg-white border border-zinc-200 rounded text-[10px] group-hover:border-zinc-300">
+                 <Command className="w-2.5 h-2.5" /> K
+               </span>
+            </button>
+
             <button 
               onClick={() => handleNavClick('#contact')}
-              className="ml-4 px-5 py-2 bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-700 transition-colors"
+              className="ml-4 px-5 py-2 bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-700 transition-colors clickable"
             >
               Let's Talk
             </button>
           </nav>
 
           {/* Mobile Toggle */}
-          <button 
-            className="md:hidden z-50 text-zinc-900 p-2 hover:bg-zinc-100 transition-colors border border-transparent hover:border-zinc-200"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <Menu className="w-6 h-6" strokeWidth={1.5} />
-          </button>
+          <div className="flex items-center gap-4 md:hidden">
+             <button 
+              onClick={onOpenCommand}
+              className="p-2 hover:bg-zinc-100 transition-colors clickable"
+            >
+               <Search className="w-5 h-5" />
+            </button>
+            <button 
+              className="z-50 text-zinc-900 p-2 hover:bg-zinc-100 transition-colors border border-transparent hover:border-zinc-200 clickable"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <Menu className="w-6 h-6" strokeWidth={1.5} />
+            </button>
+          </div>
         </div>
       </header>
 
@@ -105,7 +142,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView }) => {
             <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Menu</span>
             <button 
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2 hover:bg-zinc-100 transition-colors border border-transparent hover:border-zinc-200"
+              className="p-2 hover:bg-zinc-100 transition-colors border border-transparent hover:border-zinc-200 clickable"
             >
               <X className="w-5 h-5 text-zinc-900" strokeWidth={1.5} />
             </button>
@@ -117,7 +154,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView }) => {
               <button 
                 key={item.label} 
                 onClick={() => handleNavClick(item.href)}
-                className="text-3xl font-light text-zinc-900 text-left flex items-center justify-between group border-b border-zinc-100 pb-4"
+                className="text-3xl font-light text-zinc-900 text-left flex items-center justify-between group border-b border-zinc-100 pb-4 clickable"
               >
                 <span>{item.label}</span>
                 <ArrowRight className="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-zinc-400" />
@@ -133,7 +170,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView }) => {
             </div>
             <button 
                onClick={() => handleNavClick('#contact')}
-               className="w-full py-4 bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2"
+               className="w-full py-4 bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2 clickable"
             >
               Start a Project
             </button>

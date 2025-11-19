@@ -50,15 +50,16 @@ const Hero: React.FC = () => {
           </motion.div>
           
           <div className="mb-8">
+            {/* Adjusted font sizes for better mobile fit: text-4xl instead of 5xl on small screens */}
             <RevealTitle 
               text="DESIGNING" 
-              className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1]"
+              className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1]"
             />
              <div className="flex flex-wrap gap-x-4 items-baseline">
-                <span className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter text-zinc-400 leading-[1.1]">
+                <span className="text-4xl md:text-7xl lg:text-8xl font-light tracking-tighter text-zinc-400 leading-[1.1]">
                    <RevealTitle text="DIGITAL" delay={0.2} />
                 </span>
-                <RevealTitle text="CLARITY." delay={0.4} className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1]" />
+                <RevealTitle text="CLARITY." delay={0.4} className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1]" />
              </div>
           </div>
           
@@ -78,7 +79,7 @@ const Hero: React.FC = () => {
           >
             <a 
               href="#work" 
-              className="group relative px-8 py-4 bg-zinc-900 text-white font-medium text-sm flex items-center gap-3 overflow-hidden"
+              className="group relative px-8 py-4 bg-zinc-900 text-white font-medium text-sm flex items-center gap-3 overflow-hidden w-full sm:w-auto justify-center sm:justify-start"
             >
               <span className="relative z-10">VIEW PROJECTS</span>
               <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
@@ -87,7 +88,7 @@ const Hero: React.FC = () => {
             
             <a 
               href="#about" 
-              className="px-8 py-4 border border-zinc-300 text-zinc-900 font-medium text-sm hover:bg-zinc-50 transition-colors"
+              className="px-8 py-4 border border-zinc-300 text-zinc-900 font-medium text-sm hover:bg-zinc-50 transition-colors w-full sm:w-auto text-center"
             >
               ABOUT ME
             </a>
@@ -95,12 +96,12 @@ const Hero: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Bottom Bar */}
+      {/* Bottom Bar - Hidden on very short screens to prevent overlap */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 0.5 }}
-        className="absolute bottom-0 left-0 right-0 border-t border-zinc-200 bg-white/50 backdrop-blur-sm"
+        className="absolute bottom-0 left-0 right-0 border-t border-zinc-200 bg-white/50 backdrop-blur-sm hidden min-h-[700px]:block"
       >
         <div className="container mx-auto px-8 md:px-16 lg:px-24 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-zinc-500 uppercase tracking-widest">

@@ -16,7 +16,7 @@ const Experience: React.FC<ExperienceProps> = ({ items = [] }) => {
           
           {/* Left Column: Sticky Title */}
           <div className="lg:w-1/3">
-            <div className="sticky top-32">
+            <div className="lg:sticky lg:top-32">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -41,8 +41,9 @@ const Experience: React.FC<ExperienceProps> = ({ items = [] }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                // The Sticky Stack Magic
-                className="sticky mb-8 bg-white border border-zinc-200 p-8 md:p-10 shadow-sm"
+                // The Sticky Stack Magic - Disabled on mobile (static), enabled on desktop (lg:sticky)
+                // We use style for the top offset, but it only takes effect when class is 'sticky'
+                className="relative lg:sticky mb-8 bg-white border border-zinc-200 p-6 md:p-10 shadow-sm"
                 style={{ 
                   top: `calc(120px + ${index * 20}px)`, // Dynamic top offset creates the stack effect
                   zIndex: index + 1
@@ -59,7 +60,7 @@ const Experience: React.FC<ExperienceProps> = ({ items = [] }) => {
                   </div>
                 </div>
 
-                <p className="text-zinc-600 leading-relaxed mb-8 text-base md:text-lg">
+                <p className="text-zinc-600 leading-relaxed mb-8 text-sm md:text-lg">
                   {item.description}
                 </p>
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Layout, LogOut, FolderPlus, BarChart, Briefcase, MessageSquare } from 'lucide-react';
+import React, { useState } from 'react';
+import { Layout, LogOut, FolderPlus, BarChart, Briefcase, MessageSquare, Menu, X } from 'lucide-react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -9,6 +9,8 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeTab, onTabChange, onLogout }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <BarChart className="w-4 h-4" /> },
     { id: 'projects', label: 'Projects', icon: <FolderPlus className="w-4 h-4" /> },
@@ -16,20 +18,47 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeTab, onTabCha
     { id: 'messages', label: 'Messages', icon: <MessageSquare className="w-4 h-4" /> },
   ];
 
+  const handleTabClick = (id: string) => {
+    onTabChange(id);
+    setSidebarOpen(false); // Close sidebar on mobile after selection
+  };
+
   return (
-    <div className="min-h-screen bg-zinc-100 flex">
+    <div className="min-h-screen bg-zinc-100 flex relative">
+      {/* Mobile Header */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-zinc-900 text-white flex items-center justify-between px-4 z-30">
+         <span className="font-bold tracking-tight">CMS PANEL</span>
+         <button onClick={() => setSidebarOpen(!sidebarOpen)}>
+           {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+         </button>
+      </div>
+
+      {/* Sidebar Backdrop */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-20 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-zinc-900 text-white flex flex-col fixed h-full z-10">
-        <div className="p-6 border-b border-zinc-800">
+      <aside className={`
+        fixed md:fixed inset-y-0 left-0 z-30
+        w-64 bg-zinc-900 text-white flex flex-col 
+        transform transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        mt-16 md:mt-0 h-[calc(100vh-64px)] md:h-screen
+      `}>
+        <div className="p-6 border-b border-zinc-800 hidden md:block">
           <h1 className="text-lg font-bold tracking-tight">CMS PANEL</h1>
           <p className="text-xs text-zinc-500 uppercase tracking-widest mt-1">Neon Database</p>
         </div>
         
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {navItems.map((item) => (
             <button 
               key={item.id}
-              onClick={() => onTabChange(item.id)}
+              onClick={() => handleTabClick(item.id)}
               className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === item.id 
                   ? 'bg-zinc-800 text-white border-l-4 border-white' 
@@ -54,7 +83,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeTab, onTabCha
       </aside>
 
       {/* Content */}
-      <main className="flex-1 ml-64 p-8 md:p-12 overflow-y-auto h-screen">
+      <main className="flex-1 md:ml-64 p-4 md:p-12 mt-16 md:mt-0 overflow-y-auto h-[calc(100vh-64px)] md:h-screen w-full">
         {children}
       </main>
     </div>
