@@ -135,7 +135,7 @@ const App: React.FC = () => {
            <form onSubmit={handleAdminLogin} className="space-y-4">
              <div>
                <label className="block text-xs uppercase font-bold text-zinc-500 mb-2">Email</label>
-               <input type="email" className="w-full p-3 border border-zinc-300 bg-zinc-50" placeholder="admin@jakarta.dev" />
+               <input type="email" className="w-full p-3 border border-zinc-300 bg-zinc-50" placeholder="admin@fatih.dev" />
              </div>
              <div>
                <label className="block text-xs uppercase font-bold text-zinc-500 mb-2">Password</label>

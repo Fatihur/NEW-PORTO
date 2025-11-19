@@ -43,7 +43,7 @@ const Hero: React.FC = () => {
           >
             <span className="h-[1px] w-12 bg-zinc-400"></span>
             <Typewriter 
-              text="PORTFOLIO 2024 / JAKARTA.DEV" 
+              text="PORTFOLIO 2024 / FATIH.DEV" 
               className="text-sm uppercase tracking-widest text-zinc-500 font-medium"
               speed={0.03}
             />
@@ -64,7 +64,7 @@ const Hero: React.FC = () => {
           
           <div className="max-w-xl border-l border-zinc-300 pl-6 mb-12">
             <StaggerText 
-              text="I craft high-performance interfaces with a focus on geometric precision, clean typography, and seamless user interaction."
+              text="I'm Fatih. I craft high-performance interfaces with a focus on geometric precision, clean typography, and seamless user interaction."
               className="text-lg md:text-xl text-zinc-600 leading-relaxed"
               delay={0.8}
             />

@@ -51,8 +51,8 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView }) => {
         }`}
       >
         <div className="container mx-auto px-8 md:px-16 lg:px-24 flex items-center justify-between">
-          <a href="#" onClick={handleLogoClick} className="text-xl font-bold tracking-tighter z-50 relative">
-            JAKARTA<span className="text-zinc-400">.DEV</span>
+          <a href="#" onClick={handleLogoClick} className="text-xl font-bold tracking-tighter z-50 relative uppercase">
+            FATIH<span className="text-zinc-400">.DEV</span>
           </a>
 
           {/* Desktop Nav */}
@@ -129,7 +129,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentView }) => {
           <div className="p-8 bg-zinc-50 border-t border-zinc-200">
             <div className="grid grid-cols-2 gap-4 mb-6">
                <div className="text-xs text-zinc-500 uppercase tracking-widest mb-1">Email</div>
-               <div className="col-span-2 text-sm font-medium text-zinc-900">hello@jakarta.dev</div>
+               <div className="col-span-2 text-sm font-medium text-zinc-900">hello@fatih.dev</div>
             </div>
             <button 
                onClick={() => handleNavClick('#contact')}

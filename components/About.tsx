@@ -28,7 +28,7 @@ const About: React.FC = () => {
             
             <div className="space-y-6 text-zinc-600 leading-relaxed">
               <p>
-                I am a frontend engineer with a background in graphic design. This duality allows me to bridge the gap between visual aesthetics and technical implementation. I believe that the best digital products are those where form and function are indistinguishable.
+                Hi, I'm <strong>Fatih</strong>. I am a frontend engineer with a background in graphic design. This duality allows me to bridge the gap between visual aesthetics and technical implementation. I believe that the best digital products are those where form and function are indistinguishable.
               </p>
               <p>
                 My approach is rooted in modularity and scalability. I build systems, not just pages. Every component is crafted with attention to accessibility, performance, and reusability.
@@ -80,7 +80,7 @@ const About: React.FC = () => {
                    ></motion.div>
                    <img 
                      src="https://picsum.photos/600/800?grayscale" 
-                     alt="Portrait" 
+                     alt="Portrait of Fatih" 
                      className="absolute inset-0 w-full h-full object-cover opacity-90 mix-blend-multiply grayscale contrast-125"
                    />
                 </div>
