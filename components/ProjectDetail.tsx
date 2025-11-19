@@ -85,14 +85,14 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack }) => {
           </div>
         </div>
 
-        {/* Gallery Carousel */}
+        {/* Gallery Carousel - UPDATED: constrained width and added styling */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="relative mb-20 group"
+          className="relative mb-20 group max-w-5xl mx-auto"
         >
-          <div className="aspect-video w-full bg-zinc-100 overflow-hidden relative">
+          <div className="aspect-video w-full bg-zinc-50 overflow-hidden relative border border-zinc-200 shadow-sm">
             <AnimatePresence mode="wait">
               <motion.img 
                 key={currentImageIndex}
@@ -111,22 +111,22 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack }) => {
               <div className="absolute inset-0 flex items-center justify-between p-4 pointer-events-none">
                 <button 
                   onClick={prevImage}
-                  className="w-12 h-12 md:w-16 md:h-16 bg-white hover:bg-zinc-900 hover:text-white text-zinc-900 flex items-center justify-center pointer-events-auto transition-colors border border-zinc-200"
+                  className="w-10 h-10 md:w-14 md:h-14 bg-white/90 hover:bg-zinc-900 hover:text-white text-zinc-900 flex items-center justify-center pointer-events-auto transition-colors border border-zinc-200 shadow-sm backdrop-blur-sm"
                 >
-                  <ChevronLeft className="w-6 h-6" />
+                  <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
                 <button 
                   onClick={nextImage}
-                  className="w-12 h-12 md:w-16 md:h-16 bg-white hover:bg-zinc-900 hover:text-white text-zinc-900 flex items-center justify-center pointer-events-auto transition-colors border border-zinc-200"
+                  className="w-10 h-10 md:w-14 md:h-14 bg-white/90 hover:bg-zinc-900 hover:text-white text-zinc-900 flex items-center justify-center pointer-events-auto transition-colors border border-zinc-200 shadow-sm backdrop-blur-sm"
                 >
-                  <ChevronRight className="w-6 h-6" />
+                  <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
               </div>
             )}
           </div>
 
           {/* Geometric Progress Bar */}
-          <div className="flex items-center mt-4 gap-4">
+          <div className="flex items-center mt-4 gap-4 max-w-5xl mx-auto">
             <span className="text-xs font-bold tracking-widest w-12">
               {String(currentImageIndex + 1).padStart(2, '0')}
             </span>

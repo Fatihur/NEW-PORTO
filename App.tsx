@@ -11,6 +11,7 @@ import ProjectDetail from './components/ProjectDetail';
 import AllProjects from './components/AllProjects';
 import AdminLayout from './components/CMS/AdminLayout';
 import ProjectForm from './components/CMS/ProjectForm';
+import Chatbot from './components/Chatbot';
 import { PROJECTS as STATIC_PROJECTS } from './constants';
 import { Project } from './types';
 import { initDB, fetchProjects, deleteProject } from './lib/db';
@@ -341,6 +342,11 @@ const App: React.FC = () => {
       
       {!currentView.startsWith('admin') && (
         <Footer onAdminClick={() => setCurrentView('admin-login')} />
+      )}
+
+      {/* AI Chatbot - Only show on public pages */}
+      {!currentView.startsWith('admin') && (
+        <Chatbot projects={projects} />
       )}
     </div>
   );

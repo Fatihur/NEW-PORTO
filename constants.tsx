@@ -1,6 +1,6 @@
 import React from 'react';
 import { Project, Service, NavigationItem, ExperienceItem } from './types';
-import { Layers, Box, Layout, Terminal } from 'lucide-react';
+import { Layers, Box, Layout, Terminal, Palette, Network, BarChart3 } from 'lucide-react';
 
 export const NAV_ITEMS: NavigationItem[] = [
   { label: 'Work', href: '#work', type: 'link' },
@@ -125,26 +125,26 @@ export const PROJECTS: Project[] = [
 export const SERVICES: Service[] = [
   {
     id: 1,
-    title: "Frontend Engineering",
-    description: "Scalable React architectures, performance optimization, and accessible DOM structures.",
-    icon: <Terminal className="w-6 h-6" strokeWidth={1.5} />
+    title: "Graphic Design",
+    description: "Creating compelling visual identities, print layouts, and branding materials with a focus on geometric precision and typographic hierarchy.",
+    icon: <Palette className="w-6 h-6" strokeWidth={1.5} />
   },
   {
     id: 2,
-    title: "UI/UX Design",
-    description: "Wireframing, prototyping, and high-fidelity interface design with a focus on usability.",
-    icon: <Layout className="w-6 h-6" strokeWidth={1.5} />
+    title: "Software Engineer",
+    description: "Building robust, scalable web and mobile applications using modern frameworks. Expertise in full-stack development and clean architecture.",
+    icon: <Terminal className="w-6 h-6" strokeWidth={1.5} />
   },
   {
     id: 3,
-    title: "Design Systems",
-    description: "Creating unified component libraries to ensure consistency across digital products.",
-    icon: <Box className="w-6 h-6" strokeWidth={1.5} />
+    title: "Networking",
+    description: "Designing secure network infrastructures, managing cloud environments, and optimizing protocols for high-availability distributed systems.",
+    icon: <Network className="w-6 h-6" strokeWidth={1.5} />
   },
   {
     id: 4,
-    title: "Technical Strategy",
-    description: "Consulting on tech stack choices, deployment pipelines, and code quality standards.",
-    icon: <Layers className="w-6 h-6" strokeWidth={1.5} />
+    title: "Data Analysis",
+    description: "Transforming complex raw data into actionable insights through advanced statistical modeling, predictive analytics, and interactive visualization.",
+    icon: <BarChart3 className="w-6 h-6" strokeWidth={1.5} />
   }
 ];
