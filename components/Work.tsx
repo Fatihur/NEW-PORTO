@@ -1,0 +1,103 @@
+import React from 'react';
+import { ArrowUpRight, Plus } from 'lucide-react';
+import { Project } from '../types';
+import { motion } from 'framer-motion';
+
+interface WorkProps {
+  projects: Project[];
+  onProjectClick: (project: Project) => void;
+  onViewAllClick: () => void;
+}
+
+const Work: React.FC<WorkProps> = ({ projects, onProjectClick, onViewAllClick }) => {
+  // Show only first 4 projects on home page from the passed data
+  const featuredProjects = projects.slice(0, 4);
+
+  return (
+    <section id="work" className="py-24 md:py-32 bg-zinc-50 border-b border-zinc-200">
+      <div className="container mx-auto px-8 md:px-16 lg:px-24">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex justify-between items-end mb-12"
+        >
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Selected Works</h2>
+            <p className="text-zinc-500">A collection of digital products and experiences.</p>
+          </div>
+          <button 
+            onClick={onViewAllClick}
+            className="hidden md:flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:text-zinc-600 transition-colors border-b border-transparent hover:border-zinc-900 pb-1"
+          >
+            View All
+            <ArrowUpRight className="w-4 h-4" />
+          </button>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {featuredProjects.map((project, index) => (
+            <motion.div 
+              key={project.id} 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="group cursor-pointer block"
+              onClick={() => onProjectClick(project)}
+            >
+              <div className="relative overflow-hidden border border-zinc-200 bg-white p-2 mb-6">
+                <div className="aspect-[4/3] overflow-hidden bg-zinc-100 relative">
+                  <img 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-zinc-900/0 group-hover:bg-zinc-900/10 transition-colors duration-300 flex items-center justify-center">
+                    <div className="bg-white text-zinc-900 px-6 py-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 font-medium text-sm">
+                      View Project
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Geometric decorations */}
+                <div className="absolute -top-[1px] -left-[1px] w-3 h-3 border-t border-l border-zinc-900 z-10"></div>
+                <div className="absolute -bottom-[1px] -right-[1px] w-3 h-3 border-b border-r border-zinc-900 z-10"></div>
+              </div>
+
+              <div className="flex justify-between items-start">
+                <div>
+                   <div className="flex items-center gap-3 mb-2 text-xs font-medium uppercase tracking-widest text-zinc-500">
+                    <span>{project.year}</span>
+                    <span className="w-4 h-[1px] bg-zinc-300"></span>
+                    <span>{project.category}</span>
+                  </div>
+                  <h3 className="text-2xl font-bold group-hover:underline decoration-1 underline-offset-4 transition-all">
+                    {project.title}
+                  </h3>
+                </div>
+                <div className="w-8 h-8 border border-zinc-200 flex items-center justify-center text-zinc-400 group-hover:bg-zinc-900 group-hover:text-white group-hover:border-zinc-900 transition-colors">
+                  <Plus className="w-4 h-4" />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        
+        <div className="mt-16 flex justify-center md:hidden">
+          <button 
+            onClick={onViewAllClick}
+            className="w-full py-4 border border-zinc-300 text-sm font-medium hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-300"
+          >
+            VIEW ALL ARCHIVE
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Work;
