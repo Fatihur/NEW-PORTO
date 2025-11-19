@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Command, Search, ArrowRight, FileText, Home, Briefcase, User, Mail, Terminal } from 'lucide-react';
+import { Command, Search, ArrowRight, FileText, Home, Briefcase, User, Mail, Terminal, Gamepad2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Project, NavigationItem } from '../types';
 import { NAV_ITEMS } from '../constants';
@@ -11,6 +11,11 @@ interface CommandPaletteProps {
   projects: Project[];
   onNavigate: (view: string, data?: Project) => void;
 }
+
+type ActionItem = { type: 'action'; label: string; icon: React.ReactNode; action: string; id: string; };
+type NavItemWrapper = { type: 'nav'; data: NavigationItem; id: string; };
+type ProjectItemWrapper = { type: 'project'; data: Project; id: string; };
+type PaletteItem = ActionItem | NavItemWrapper | ProjectItemWrapper;
 
 const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpen, projects, onNavigate }) => {
   const [query, setQuery] = useState('');
@@ -26,9 +31,15 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpen, proj
     project.category.toLowerCase().includes(query.toLowerCase())
   );
 
-  const allItems = [
-    ...filteredNav.map(item => ({ type: 'nav', data: item, id: `nav-${item.label}` })),
-    ...filteredProjects.map(item => ({ type: 'project', data: item, id: `proj-${item.id}` }))
+  // Custom Commands
+  const customCommands: ActionItem[] = query.toLowerCase().includes('game') || query.toLowerCase().includes('snake') || query === '' 
+    ? [{ type: 'action', label: 'Play Snake', icon: <Gamepad2 className="w-4 h-4" />, action: 'game', id: 'cmd-snake' }] 
+    : [];
+
+  const allItems: PaletteItem[] = [
+    ...customCommands,
+    ...filteredNav.map(item => ({ type: 'nav', data: item, id: `nav-${item.label}` } as NavItemWrapper)),
+    ...filteredProjects.map(item => ({ type: 'project', data: item, id: `proj-${item.id}` } as ProjectItemWrapper))
   ];
 
   // Reset selection on query change
@@ -62,10 +73,12 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpen, proj
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, selectedIndex, allItems]);
 
-  const handleSelect = (item: any) => {
-    if (item.type === 'nav') {
+  const handleSelect = (item: PaletteItem) => {
+    if (item.type === 'action') {
+       onNavigate(item.action);
+    } else if (item.type === 'nav') {
       // Handle Nav
-      const navItem = item.data as NavigationItem;
+      const navItem = item.data;
       const href = navItem.href;
       if (href.startsWith('#')) {
         onNavigate('home'); // Basic nav logic
@@ -74,7 +87,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpen, proj
         }, 100);
       }
     } else if (item.type === 'project') {
-      onNavigate('project-detail', (item.data as Project));
+      onNavigate('project-detail', item.data);
     }
     setIsOpen(false);
     setQuery('');
@@ -132,11 +145,33 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpen, proj
                   </div>
                 ) : (
                   <>
+                    {/* Actions */}
+                    {customCommands.length > 0 && (
+                       <div className="px-4 py-2">
+                         <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Actions</h4>
+                         {customCommands.map((item) => (
+                            <button 
+                             key={item.id}
+                             onClick={() => handleSelect(item)}
+                             className={`w-full flex items-center justify-between px-4 py-3 rounded-md transition-colors text-left mb-1 ${
+                               allItems.indexOf(item) === selectedIndex ? 'bg-zinc-900 text-white' : 'hover:bg-zinc-100 text-zinc-600'
+                             }`}
+                           >
+                              <div className="flex items-center gap-3">
+                                {item.icon}
+                                <span className="font-medium">{item.label}</span>
+                              </div>
+                              {allItems.indexOf(item) === selectedIndex && <ArrowRight className="w-4 h-4" />}
+                           </button>
+                         ))}
+                       </div>
+                    )}
+
                     {filteredNav.length > 0 && (
-                      <div className="px-4 py-2">
+                      <div className="px-4 py-2 border-t border-zinc-100 mt-2 pt-2">
                          <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Navigation</h4>
-                         {allItems.filter(i => i.type === 'nav').map((item, i) => {
-                           const navItem = item.data as NavigationItem;
+                         {allItems.filter((i): i is NavItemWrapper => i.type === 'nav').map((item) => {
+                           const navItem = item.data;
                            return (
                            <button 
                              key={item.id}
@@ -157,10 +192,10 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpen, proj
                     )}
 
                     {filteredProjects.length > 0 && (
-                      <div className="px-4 py-2 border-t border-zinc-100 mt-2 pt-4">
+                      <div className="px-4 py-2 border-t border-zinc-100 mt-2 pt-2">
                          <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Projects</h4>
-                         {allItems.filter(i => i.type === 'project').map((item, i) => {
-                           const projectItem = item.data as Project;
+                         {allItems.filter((i): i is ProjectItemWrapper => i.type === 'project').map((item) => {
+                           const projectItem = item.data;
                            return (
                            <button 
                              key={item.id}

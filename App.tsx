@@ -17,10 +17,12 @@ import ContactManager from './components/CMS/ContactManager';
 import Chatbot from './components/Chatbot';
 import CustomCursor from './components/CustomCursor';
 import CommandPalette from './components/CommandPalette';
+import SnakeGame from './components/SnakeGame';
 import { PROJECTS as STATIC_PROJECTS, EXPERIENCE_ITEMS as STATIC_EXPERIENCE } from './constants';
 import { Project, ExperienceItem, ContactMessage } from './types';
 import { initDB, fetchProjects, deleteProject, fetchExperience, fetchMessages } from './lib/db';
 import { Loader2, Plus, Trash2, Edit, RefreshCcw } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 
 type ViewState = 'home' | 'project-detail' | 'all-projects' | 'admin-login' | 'admin-dashboard';
 
@@ -29,6 +31,7 @@ const App: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [previousView, setPreviousView] = useState<ViewState>('home');
   const [isCommandOpen, setIsCommandOpen] = useState(false);
+  const [isGameOpen, setIsGameOpen] = useState(false);
   
   // Data State
   const [projects, setProjects] = useState<Project[]>(STATIC_PROJECTS);
@@ -160,7 +163,9 @@ const App: React.FC = () => {
 
   // Navigation Handler for Command Palette
   const handleCommandNavigate = (view: string, projectData?: any) => {
-    if (view === 'project-detail' && projectData) {
+    if (view === 'game') {
+      setIsGameOpen(true);
+    } else if (view === 'project-detail' && projectData) {
       handleProjectClick(projectData);
     } else {
       setCurrentView(view as ViewState);
@@ -381,12 +386,19 @@ const App: React.FC = () => {
   return (
     <div className="antialiased min-h-screen bg-zinc-50 text-zinc-900 selection:bg-zinc-900 selection:text-white cursor-none">
       <CustomCursor />
+      
       <CommandPalette 
         isOpen={isCommandOpen} 
         setIsOpen={setIsCommandOpen} 
         projects={projects} 
         onNavigate={handleCommandNavigate}
       />
+
+      <AnimatePresence>
+        {isGameOpen && (
+          <SnakeGame onClose={() => setIsGameOpen(false)} />
+        )}
+      </AnimatePresence>
 
       {/* Hide Header on Admin Pages */}
       {!currentView.startsWith('admin') && (
@@ -402,7 +414,10 @@ const App: React.FC = () => {
       </main>
       
       {!currentView.startsWith('admin') && (
-        <Footer onAdminClick={() => setCurrentView('admin-login')} />
+        <Footer 
+          onAdminClick={() => setCurrentView('admin-login')} 
+          onPlayGame={() => setIsGameOpen(true)}
+        />
       )}
 
       {/* AI Chatbot - Only show on public pages */}

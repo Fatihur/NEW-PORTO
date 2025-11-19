@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowUp, Globe } from 'lucide-react';
+import { ArrowUp, Globe, Gamepad2 } from 'lucide-react';
 
 interface FooterProps {
   onAdminClick?: () => void;
+  onPlayGame?: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ onAdminClick }) => {
+const Footer: React.FC<FooterProps> = ({ onAdminClick, onPlayGame }) => {
   const [time, setTime] = useState<string>('');
 
   useEffect(() => {
@@ -39,12 +40,24 @@ const Footer: React.FC<FooterProps> = ({ onAdminClick }) => {
              <p className="cursor-default hover:text-zinc-200 transition-colors clickable">&copy; {new Date().getFullYear()} Fatih. All rights reserved.</p>
            </div>
            
-           {/* Live Clock */}
-           <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-500">
-              <Globe className="w-3 h-3 text-zinc-600" />
-              <span>JKT, ID</span>
-              <span className="w-px h-3 bg-zinc-700"></span>
-              <span className="text-zinc-300">{time}</span>
+           {/* Live Clock & Game Trigger */}
+           <div className="hidden md:flex items-center gap-2">
+             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-500">
+                <Globe className="w-3 h-3 text-zinc-600" />
+                <span>JKT, ID</span>
+                <span className="w-px h-3 bg-zinc-700"></span>
+                <span className="text-zinc-300">{time}</span>
+             </div>
+
+             {onPlayGame && (
+               <button 
+                onClick={onPlayGame}
+                className="w-7 h-7 flex items-center justify-center rounded-full bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-500 hover:text-white transition-colors clickable"
+                title="Play Snake"
+               >
+                 <Gamepad2 className="w-3 h-3" />
+               </button>
+             )}
            </div>
         </div>
         
