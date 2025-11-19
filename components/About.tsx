@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { CornerAccents } from './GeometricElements';
+import { CornerAccents, ConcentricCircles, GridPattern } from './GeometricElements';
 import { CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { RevealTitle, Typewriter } from './TextAnimations';
@@ -47,9 +48,12 @@ const About: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 + (index * 0.05) }}
-                    className="px-4 py-2 border border-zinc-200 text-sm hover:border-zinc-900 hover:bg-zinc-50 transition-colors cursor-default"
+                    className="px-4 py-2 border border-zinc-200 text-sm hover:border-zinc-900 hover:bg-zinc-50 transition-colors cursor-default relative group"
                   >
                     {skill}
+                    {/* Tiny corner markers on hover */}
+                    <span className="absolute top-0 left-0 w-1 h-1 border-t border-l border-zinc-900 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                    <span className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-zinc-900 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   </motion.span>
                 ))}
               </div>
@@ -64,10 +68,14 @@ const About: React.FC = () => {
             className="lg:w-1/2 relative"
           >
              {/* Abstract Profile / Graphic Representation */}
-             <div className="relative w-full h-full min-h-[400px] bg-zinc-100 p-8 flex items-center justify-center">
+             <div className="relative w-full h-full min-h-[400px] bg-zinc-50 border border-zinc-100 p-8 flex items-center justify-center overflow-hidden">
+                <GridPattern />
                 <CornerAccents />
                 
-                <div className="w-64 h-64 border border-zinc-300 relative">
+                {/* Background Geometric */}
+                <ConcentricCircles className="absolute w-[500px] h-[500px] opacity-10 text-zinc-400" />
+
+                <div className="w-64 h-64 border border-zinc-300 relative z-10 bg-white">
                    <motion.div 
                      animate={{ rotate: [6, 3, 6] }}
                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -81,7 +89,7 @@ const About: React.FC = () => {
                    <img 
                      src="https://picsum.photos/600/800?grayscale" 
                      alt="Portrait of Fatih" 
-                     className="absolute inset-0 w-full h-full object-cover opacity-90 mix-blend-multiply grayscale contrast-125"
+                     className="absolute inset-0 w-full h-full object-cover opacity-90 mix-blend-multiply grayscale contrast-125 p-1 bg-white"
                    />
                 </div>
                 
@@ -91,7 +99,7 @@ const About: React.FC = () => {
                   whileInView={{ y: 0, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.6 }}
-                  className="absolute bottom-12 left-8 bg-white border border-zinc-200 p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] max-w-[200px]"
+                  className="absolute bottom-12 left-8 bg-white border border-zinc-200 p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] max-w-[200px] z-20"
                 >
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-zinc-900 shrink-0 mt-0.5" />

@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { ArrowDown, ArrowRight } from 'lucide-react';
-import { GridPattern, PlusIcon } from './GeometricElements';
+import { GridPattern, PlusIcon, Crosshair, StripedBar, DotPattern } from './GeometricElements';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { RevealTitle, Typewriter, StaggerText } from './TextAnimations';
 
@@ -16,7 +17,26 @@ const Hero: React.FC = () => {
   return (
     <section className="relative min-h-screen flex flex-col justify-center pt-20 border-b border-zinc-200 overflow-hidden">
       <GridPattern />
+      <DotPattern className="opacity-20" />
       
+      {/* Geometric Accents */}
+      <div className="absolute top-32 left-8 hidden lg:block opacity-50">
+        <Crosshair />
+        <div className="mt-2 text-[10px] font-mono text-zinc-400">FIG. 01</div>
+      </div>
+      
+      <div className="absolute bottom-32 right-8 hidden lg:block opacity-50">
+        <Crosshair />
+        <div className="mt-2 text-[10px] font-mono text-zinc-400 text-right">FIG. 02</div>
+      </div>
+
+      <motion.div 
+        style={{ y: yBg }}
+        className="absolute top-1/4 right-0 w-24 opacity-20 hidden lg:block"
+      >
+         <StripedBar className="w-full h-64 rotate-90" />
+      </motion.div>
+
       {/* Abstract Geometric Decoration with Parallax */}
       <motion.div 
         style={{ y: yBg, rotate: 0 }}
@@ -47,6 +67,7 @@ const Hero: React.FC = () => {
               className="text-sm uppercase tracking-widest text-zinc-500 font-medium"
               speed={0.03}
             />
+            <StripedBar className="w-12 h-2 ml-4 opacity-30 hidden sm:block" />
           </motion.div>
           
           <div className="mb-8">
@@ -63,7 +84,10 @@ const Hero: React.FC = () => {
              </div>
           </div>
           
-          <div className="max-w-xl border-l border-zinc-300 pl-6 mb-12">
+          <div className="max-w-xl border-l border-zinc-300 pl-6 mb-12 relative">
+            <div className="absolute -left-[5px] top-0 w-2 h-2 bg-zinc-900 rounded-full"></div>
+            <div className="absolute -left-[5px] bottom-0 w-2 h-2 bg-zinc-900 rounded-full"></div>
+            
             <StaggerText 
               text="I'm Fatih. I craft high-performance interfaces with a focus on geometric precision, clean typography, and seamless user interaction."
               className="text-lg md:text-xl text-zinc-600 leading-relaxed"
@@ -88,9 +112,10 @@ const Hero: React.FC = () => {
             
             <a 
               href="#about" 
-              className="px-8 py-4 border border-zinc-300 text-zinc-900 font-medium text-sm hover:bg-zinc-50 transition-colors w-full sm:w-auto text-center"
+              className="px-8 py-4 border border-zinc-300 text-zinc-900 font-medium text-sm hover:bg-zinc-50 transition-colors w-full sm:w-auto text-center relative overflow-hidden group"
             >
-              ABOUT ME
+              <span className="relative z-10">ABOUT ME</span>
+              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-zinc-900 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
             </a>
           </motion.div>
         </div>

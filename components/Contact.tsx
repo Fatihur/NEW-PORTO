@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { ArrowRight, Mail, MapPin, Loader2, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { RevealTitle } from './TextAnimations';
 import { sendMessage } from '../lib/db';
+import { DotPattern } from './GeometricElements';
 
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
@@ -25,8 +27,10 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-24 md:py-32 bg-zinc-900 text-zinc-50">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24">
+    <section id="contact" className="py-24 md:py-32 bg-zinc-900 text-zinc-50 relative overflow-hidden">
+      <DotPattern className="opacity-10 invert" />
+
+      <div className="container mx-auto px-8 md:px-16 lg:px-24 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -43,8 +47,8 @@ const Contact: React.FC = () => {
             </p>
             
             <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 border border-zinc-700 flex items-center justify-center">
+              <div className="flex items-center gap-4 group">
+                <div className="w-10 h-10 border border-zinc-700 flex items-center justify-center group-hover:bg-zinc-800 transition-colors">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
@@ -53,8 +57,8 @@ const Contact: React.FC = () => {
                 </div>
               </div>
               
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 border border-zinc-700 flex items-center justify-center">
+              <div className="flex items-center gap-4 group">
+                <div className="w-10 h-10 border border-zinc-700 flex items-center justify-center group-hover:bg-zinc-800 transition-colors">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div>
@@ -70,7 +74,7 @@ const Contact: React.FC = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-zinc-850 p-8 md:p-12 border border-zinc-800 relative"
+            className="bg-zinc-850 p-8 md:p-12 border border-zinc-800 relative shadow-2xl"
           >
             <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-white/10"></div>
             <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-white/10"></div>

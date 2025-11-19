@@ -1,8 +1,10 @@
+
 import React from 'react';
 import { ArrowUpRight, Plus } from 'lucide-react';
 import { Project } from '../types';
 import { motion } from 'framer-motion';
 import { RevealTitle, StaggerText } from './TextAnimations';
+import { TechnicalCorner } from './GeometricElements';
 
 interface WorkProps {
   projects: Project[];
@@ -50,8 +52,14 @@ const Work: React.FC<WorkProps> = ({ projects, onProjectClick, onViewAllClick })
               className="group cursor-pointer block"
               onClick={() => onProjectClick(project)}
             >
-              <div className="relative overflow-hidden border border-zinc-200 bg-white p-2 mb-6">
-                <div className="aspect-[4/3] overflow-hidden bg-zinc-100 relative">
+              <div className="relative overflow-hidden border border-zinc-200 bg-white p-3 mb-6">
+                {/* Crop Marks */}
+                <TechnicalCorner className="absolute top-0 left-0 text-zinc-900 z-20" />
+                <TechnicalCorner className="absolute top-0 right-0 rotate-90 text-zinc-900 z-20" />
+                <TechnicalCorner className="absolute bottom-0 left-0 -rotate-90 text-zinc-900 z-20" />
+                <TechnicalCorner className="absolute bottom-0 right-0 rotate-180 text-zinc-900 z-20" />
+
+                <div className="aspect-[4/3] overflow-hidden bg-zinc-100 relative m-1">
                   <img 
                     src={project.image} 
                     alt={project.title} 
@@ -65,13 +73,9 @@ const Work: React.FC<WorkProps> = ({ projects, onProjectClick, onViewAllClick })
                     </div>
                   </div>
                 </div>
-                
-                {/* Geometric decorations */}
-                <div className="absolute -top-[1px] -left-[1px] w-3 h-3 border-t border-l border-zinc-900 z-10"></div>
-                <div className="absolute -bottom-[1px] -right-[1px] w-3 h-3 border-b border-r border-zinc-900 z-10"></div>
               </div>
 
-              <div className="flex justify-between items-start">
+              <div className="flex justify-between items-start px-2">
                 <div>
                    <div className="flex items-center gap-3 mb-2 text-xs font-medium uppercase tracking-widest text-zinc-500">
                     <span>{project.year}</span>
